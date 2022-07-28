@@ -1,0 +1,433 @@
+.page-header {
+ margin-top: 0;
+ margin-bottom: 40px;
+ background: url('/static/img/header.jpeg')
+}
+ h2 {
+ color: #000000
+}
+ .h2 {
+ font-weight: 400
+}
+ .page-header h1, .page-header h1 a, .page-header h1 a:visited, .page-header h1 a:active {
+ color: #000000;
+ font-size: 48pt;
+ text-decoration: none;
+ max-width: 900px
+}
+ .date {
+ color: #828282
+}
+ .save {
+ float: right
+}
+ .top-menu, .top-menu:hover, .top-menu:visited {
+ color: #ffffff;
+ float: right;
+ font-size: 26pt;
+ margin-right: 20px
+}
+ .btn-secondary, .btn-secondary:visited {
+ color: #C25100;
+ background: none;
+ border-color: #C25100
+}
+ .btn-secondary: hover {
+ color: #FFFFFF;
+ background-color: #C25100
+}
+ a {
+ text-decoration: none;
+ color: #3078b0
+}
+ a:hover {
+ color: #b06830
+}
+ .metacard {
+ text-align: right;
+ float: right;
+ width: 440px;
+ border-style: solid;
+ border-width: 1px;
+ height: 125 px;
+ position: relative;
+ padding-top: 25px;
+ padding-bottom: 10px;
+ margin: 10px;
+ border-radius: 15px;
+ border-color: #808080
+}
+ .metacard .title_tl {
+ font-size: 16px;
+ text-indent: 20px;
+ margin-bottom: 0px
+}
+ .left-card {
+ position: absolute;
+ left: 0;
+ top: 25px;
+ width: 45%;
+ text-align: left;
+ margin-left: 25px;
+ padding-right: 5%
+}
+ .right-card {
+ float: right;
+ width: 45%;
+ margin-right: 25px;
+ padding-left: 5%
+}
+ h2.h2ar {
+ font-size: 22px;
+ color: #000000
+}
+ h2.h2en {
+ font-size: 20px;
+ color: #000000
+}
+ h2.h2au {
+ font-size: 14px
+}
+ h2.h2au.h2ar {
+ font-size: 16px
+}
+ .tdleft {
+ text-align: left;
+ padding-left: 25px;
+ width: 50%
+}
+ .tdright {
+ text-align: right;
+ padding-right: 25px;
+ direction: rtl
+}
+ .tcard {
+ width: 100%
+}
+ .thead .tleft th, td {
+ padding-left: 7.5px;
+ padding-right: 7.5px
+}
+ tr {
+ padding-top: 0px
+}
+ .thead {
+ margin: auto
+}
+ .textcard {
+ margin: auto;
+ width: 100%
+}
+ .ti {
+ margin-left: -5px;
+ margin-right: -5px
+}
+ a div.metacard {
+ color: #000000
+}
+ .hcontainer {
+ width: 100%;
+ padding: 20px 100px 20px
+}
+ .hheader {
+ font-family: 'Francois One';
+ font-size: 48px;
+ color: black;
+}
+ .hlink {
+ margin: auto;
+ width: 900px;
+ height: 100%
+}
+ .hlinks {
+ font-size: 16px;
+ color: #FFFFFF;
+ font-weight: 400
+}
+ .linkcenter {
+ margin: auto;
+ height: 50px;
+ background: #3078b0
+}
+ li {
+ float: left;
+ padding: 12px
+}
+ ul {
+ list-style-type: none;
+ margin: 0;
+ padding: 0;
+ overflow: hidden
+}
+ body {
+ display: flex;
+ flex-direction: column;
+ min-height: 100% !important;
+ overflow-y: scroll;
+ /* Show vertical scrollbar */
+}
+ .container {
+ width: 920px;
+ height: 100%;
+ padding: 0;
+ margin-bottom: 100px
+}
+ .tleft {
+ float: left;
+ font-family: 'Open Sans'
+}
+ .tright {
+ float: right
+}
+ .col, .now {
+ width: 920px;
+ margin: auto
+}
+ table.crptable td, th {
+ border: 1px solid;
+ padding: 2px;
+ padding-left: 5px;
+ text-align: center;
+ font-size: 13px
+}
+ .tileft {
+ text-align: left !important
+}
+ .controls {
+ margin: auto;
+ text-align: center;
+ border-top: 1px solid;
+ border-color: #CCCCCC
+}
+ .read_info {
+ margin: auto;
+ border-bottom: 1px solid;
+ border-color: #cccccc;
+ padding-bottom: 25px
+}
+ .read_display {
+ border: 0px solid;
+ margin-top: 25px;
+ margin-left: 100px;
+ margin-right: 100px;
+ min-height: 300px;
+ font-size: 18px
+}
+ a.rnav {
+ font-weight: 900
+}
+ .tin {
+ text-align: center;
+ font-weight: 700;
+ padding-bottom: 25px
+}
+ .tcard .tdleft {
+ font-size: 14px
+}
+ .welcome {
+ width: 920px;
+ margin: auto;
+ padding-left: 25px;
+ padding-right: 25px
+}
+ .moredet td {
+ padding-top: 25px;
+ text-align: center;
+ font-size: 12px;
+ font-weight: 700
+}
+ .fixedtext p {
+ margin-left: 25px
+}
+ .read_info .tdleft, .read_info .tdright {
+ font-size: 26px
+}
+ .rau {
+ font-size: 16px !important
+}
+ em {
+ font-style: italic
+}
+ .tr_au {
+ vertical-align: top
+}
+ footer {
+ margin-top: auto;
+ flex: 0 0 125px;
+ width: 100%;
+ /* Height of the footer*/
+ height: 128px;
+ background-color: #3078b0;
+ border-color: #d5dfdf
+}
+ .div_footer {
+ text-align: center;
+ padding-top: 12.5px;
+ width: 920px;
+ margin: auto;
+ height: 125px;
+ position: relative
+}
+ .footer_link_container {
+ margin: 0;
+ position: absolute;
+ top: 50%;
+ left: 50%;
+ transform: translate(-50%, -50%);
+ color: #ffffff;
+ font-size: 14px;
+ font-family: 'Open Sans'
+}
+ .footer_link {
+ color: #ffffff;
+ margin: 20px
+}
+ html {
+ min-height: 100% !important;
+ height: 100%
+}
+ h1 {
+ color: #688768 !important
+}
+ .tdfoot, .tdfoot a {
+ width: 33%;
+ color: #000000;
+ font-weight: 500;
+ text-align: center;
+ font-size: 14px
+}
+ .tdfoot a: hover {
+ text-decoration: underline;
+ color: #454545
+}
+ .search_result {
+ float: right;
+ padding: 5px;
+ font-size: 16px !important;
+ font-weight: 400 !important
+}
+ .search_display {
+ height: 100%;
+ width: 100%
+}
+ .search_form {
+ text-align: center;
+ width: 100%;
+ height: 100%;
+ margin-bottom: 40px
+}
+ .search_results {
+ width: 100%;
+ border: 1px solid;
+ font-size: 16px !important
+}
+ .td_sr {
+ border: 1px solid;
+ direction: rtl
+}
+ .sr_tit {
+ direction: rtl;
+ min-width: 67%
+}
+ .crpup {
+ margin-top: 25px;
+ border-top: 0
+}
+ .corpus_upd {
+ margin-left: 25px
+}
+ .au_left {
+ width: 17%;
+ font-weight: 500
+}
+ input[type="search"]::-webkit-search-cancel-button {
+ /* Remove default */
+ -webkit-appearance: none
+}
+ .paging {
+ width: 100%;
+ text-align: center;
+ font-size: 12px
+}
+ .td_result {
+ width: 550px
+}
+ .filter_search {
+ float: right;
+ height: 90%;
+ margin-bottom: 10px;
+ width: 100%;
+ border: 1px solid
+}
+ .filter_texts {
+ display: inline-block;
+ height: 100%;
+ padding: 1%;
+ text-align: center;
+ width: 69%;
+ font-size: 14px;
+ border-left: 1px solid;
+ font-weight: 500
+}
+ .filter_auth {
+ text-align: center;
+ width: 29%;
+ display: inline-block;
+ height: 100%;
+ padding: 1%;
+ border-right: 0px;
+ font-size: 14px;
+ font-weight: 500
+}
+ .filter_sub {
+ float: right;
+ width: 100%
+}
+ .filter_title {
+ text-align: center;
+ height: 30px;
+ line-height: 30px;
+ background-color: #3078b0;
+ font-size: 16px;
+ color: #FFFFFF;
+ font-weight: 400;
+ border-bottom: 1px solid;
+ border-color: #000000
+}
+ .th_sr {
+ background-color: #3078b0;
+ font-size: 16px;
+ color: #FFFFFF;
+ font-weight: 400;
+ border-color: #000000
+}
+ .filterbtn_div {
+ width: 100%;
+ text-align: center;
+ margin-top: 10px;
+ float: right;
+}
+.error
+{
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    width: 100%;
+}
+input {
+  text-align: center;
+}
+
+::-webkit-input-placeholder {
+  text-align: center;
+}
+
+:-moz-placeholder {
+  text-align: center;
+}
+#logo
+{
+  height: 150px;
+  border-radius:100%;
+  border:6px solid #000000;
+}

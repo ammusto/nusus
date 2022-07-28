@@ -1,0 +1,61 @@
+{% extends 'base.html' %} {% block content %} 
+<div class="search_form">
+  <form>
+    <input type="search" name="text_contains" placeholder="Text Contains...">&emsp;&emsp;&emsp; <input value="Search" type="submit">
+  </form>
+</div> 
+{% if main_result_list %} 
+<div class="filter_search">
+  <div class="filter_title"> Filter Search </div>
+  <div class="filter_auth">
+    <form name="filter">Select Authors: <br> {% for item in filterauth %} <div class="search_result">
+        {{item.sh_ar}}
+        <input type="checkbox" id="{{ item.au_id }}" name="a" value="{{ item.au_id }}">
+      </div> {% endfor %} <input type="hidden" name="text_contains" value="{{getsearch}}">
+      <input type="hidden" name="f" value="1">
+      <div class="filterbtn_div">
+        <input value="Filter" type="submit">
+      </div>
+    </form>
+  </div>
+  <div class="filter_texts">
+    <form name="filter"> Select Texts: <br> 
+        {% for item in filteritems %} 
+        <div class="search_result">
+            {{item.title_ar}}
+        <input type="checkbox" id="{{ item.text_id }}" name="t" value="{{ item.text_id }}">
+        </div> 
+        {% endfor %} 
+      <input type="hidden" name="text_contains" value="{{getsearch}}">
+      <input type="hidden" name="f" value="1">
+      <div class="filterbtn_div">
+        <input value="Filter" type="submit">
+      </div>
+  </div>
+</div>
+</form>
+<table class="search_results">
+  <tbody>
+    <tr>
+      <th class="td_sr th_sr">Pg </td>
+      <th class="td_sr td_result th_sr">Result </td>
+      <th class="td_sr th_sr">Source </td>
+    </tr> 
+    {% for text in main_result_list %} <tr>
+      <td class="td_sr">
+        <a href="../results/{{text.Textid}}/{{text.PgID}}/?t={{getsearch}}" target="_blank" rel="noopener noreferrer">{{ text.Page }}</a>
+      </td>
+      <td class="td_sr">{{ text.Term.0|safe }}</td>
+      <td class="td_sr">
+        <a href="../text/{{text.Textid}}" target="_blank" rel="noopener noreferrer">{{ text.Text.title_ar }}</a>
+      </td>
+    </tr> 
+    {% endfor %}
+  </tbody>
+</table> 
+{% endif %} 
+<div class="error"> 
+    {% if error  %} 
+        {{error}} 
+    {% endif %} 
+</div> {% endblock %}

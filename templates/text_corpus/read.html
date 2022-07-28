@@ -1,0 +1,34 @@
+{% extends 'base.html' %} {% block content %} 
+<div class="read_container">
+  <div class="read_info" name="top">
+    <table width="100%">
+      <tbody>
+        <tr class='tr_au'>
+          <td colspan="2">
+            <h4>
+              <a href="/text/{{ text.text_id }}">{{ text }}
+            </h4>
+          </td>
+        </tr>
+        <tr class='tr_au'>
+          <td>
+            <h4>{{ text.title_ar }}</h4>
+          </td>
+          <td></td>
+        </tr>
+        <tr class='tr_au'>
+          <td>
+            <a href="/author/{{text.au_id.au_id}}">By: {{ text.au_id }}</a> (d. {{ text.au_id.date}})
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="read_display" dir="rtl"> {% for content in ppage.object_list %} {{ content.pg_cont|safe }} {% endfor %} </div>
+  <div class="controls"> {% if ppage.has_previous %} <a class='rnav' href="?page={{ ppage.previous_page_number }}">&ensp;< </a> {% else %} < {% endif %} {% for i in prange %} {% if ppage.number == i %} <a href="?page={{i}}" style="font-weight:bold; text-decoration: underline;">{{i}}</a> {% else %} {% if i == ppage.read_paginator.ELLIPSIS %} <a href="?page={{i}}">{{i}}</a> {% else %} <a href="?page={{i}}">{{i}}</a> {% endif %} {% endif %} {% endfor %} {%if ppage.has_next %} <a class='rnav' href="?page={{ ppage.next_page_number }}">>&ensp;</a> {% else %} > {% endif %} </div>
+  <div class="paging">
+    <form>
+      <input type="search" name="page" placeholder="go to" style="width:40px; height:20px;text-align:center">
+      <input type="submit" hidden />
+    </form>
+  </div> {% endblock %}

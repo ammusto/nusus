@@ -1,0 +1,65 @@
+{% extends 'base.html' %} {% block content %} 
+<div>
+  <table border="0" cellpadding="0" cellspacing="5" class='tcard'>
+    <tbody>
+      <tr class='tr_au'>
+        <td colspan="2">
+          <h4>
+            <a href="">{{ text.title_tl }}</a>
+        </td>
+      </tr>
+      <tr class='tr_au'>
+        <td colspan="2">
+          <h4>{{ text.title_ar }}</h4>
+        </td>
+      </tr>
+      <tr class='tr_au'>
+        <td class="au_left">author: </td>
+        <td>
+          <a href="{% url 'au_detail' pk=text.au_id.pk %}">{{ text.au_id }}</a> (d. {{ text.au_id.date}})
+        </td>
+      </tr>
+      <tr class='tr_au'>
+        <td class="au_left">Length: </td>
+        <td>{{ text.pg_len }} pages, pg: {{ text.pg_rng }}
+          <br>{{ text.word_len}} words
+        </td>
+      </tr>
+      <tr class='tr_au'>
+        <td class="au_left">Base Edition: </td> 
+        {% if text.perm == '0' %} 
+          <td>{{ text.permbib|safe }}</td> 
+        {% else %} <td>
+          <a href="{{ text.perm }}" target="_blank" rel="noopener noreferrer">{{ text.permbib|safe }}</a>
+        </td> 
+        {% endif %}
+      </tr>
+      <tr>
+        <td class="au_left">PDF:</td> 
+        {% if text.editions == '0' %} 
+          <td>N/A</td> 
+        {% else %} <td>
+          <a href="{{ text.editions }}" target="_blank" rel="noopener noreferrer">Here</a>
+        </td> 
+        {% endif %}
+      </tr> 
+      {% for text in au_texts %} 
+        <tr class='tr_au'>
+        <td class="au_left"></td>
+        <td>
+          <a href='../../text/{{text.text_id}}'>{{ text }}</a>
+          </h2>
+        </td>
+      </tr> 
+      {% endfor %} 
+      {% if text.avail_read == 1 %} <tr>
+        <td class="au_left">Read in Corpus:</td>
+        <td>
+          <a href='../../read/{{ text.text_id }}'>Here</a>
+        </td>
+        </td>
+      </tr> 
+      {% endif %}
+    </tbody>
+  </table>
+</div> {% endblock %}

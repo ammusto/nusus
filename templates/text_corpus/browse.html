@@ -1,0 +1,33 @@
+{% extends 'base.html' %} {% block content %} 
+<div class="fixedtext">
+  <h2> Browse the Corpus</h2>
+  <p>Here you can find a table of all of the texts currently in this corpus. More information about the text and/or author can be found through clicking on their respective name. Finally, each text is based on a published edition, which can be found on each text's respective page.
+  <p>In terms of copyright, this project is in alignment with <a href="https://openiti.org/docs/Copyright_Questions.html">OpenITI's position</a>. In brief, because these texts were originally written prior to 1900, they are in the public domain.
+  <p>If you notice any errors please <a href="mailto:amusto@nyu.edu">report them</a>--thank you!.
+</div>
+<div class="fixedtext">
+  <table width=100% class='crptable'>
+    <thead>
+      <tr>
+        <th>{% if direct == 'desc' %} <a href="./?order=tid">{% else %} <a href="./?order=tid&d=desc">{% endif %}Text ID</a>
+        </th>
+        <th>{% if direct == 'desc' %} <a href="./?order=ti">{% else %} <a href="./?order=ti&d=desc">{% endif %}Title </th>
+        <th>{% if direct == 'desc' %} <a href="./?order=au">{% else %} <a href="./?order=au&d=desc">{% endif %}Author </th>
+        <th>Text File</th>
+        <th>Read</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody> {% for tentry in tentry %} <tr>
+        <td>{{ tentry.text_id }}</td>
+        <td class='tileft'>
+          <a href="{% url 'text_detail' pk=tentry.pk %}">{{ tentry.title_tl }}</a>
+        </td>
+        <td>
+          <a href="{% url 'au_detail' pk=tentry.au_id.pk %}">{{ tentry.au_id.au_sh }} (d. {{ tentry.au_id.date}})</a>
+        </td>
+        <td>N/A</td>
+        <td>{% if tentry.avail_read == 1 %} <a href="../read/{{ tentry.pk}}">Link</a> {%else%} N/A {% endif %} </td>
+      </tr> {% endfor %} </tbody>
+  </table>
+</div>{% endblock %}

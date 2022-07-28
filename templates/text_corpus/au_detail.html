@@ -1,0 +1,33 @@
+{% extends 'base.html' %} {% block content %} 
+<div>
+  <table border="0" cellpadding="0" cellspacing="5" class='tcard'>
+    <tbody>
+      <tr class='tr_au'>
+        <td colspan="2">
+          <h4>
+            <a href="">{{ author.au_tl }}</a>
+        </td>
+      </tr>
+      <tr class='tr_au'>
+        <td class="au_left">death date:</td>
+        <td> {{ author.date }}</td>
+      </tr>
+      <tr class='tr_au'>
+        <td class="au_left">bio:</td>
+        <td> {{ author.bio|safe }}
+          <br>
+          <br> Taken from: <br>{{ author.cit }}
+        </td>
+      </tr>
+      <tr>
+        <td class="au_left">Texts in corpus:</td>
+        <td></td>
+      </tr> {% for text in au_texts %} <tr class='tr_au'>
+        <td></td>
+        <td>
+          <a href='../../text/{{text.text_id}}'>{{ text }}</a>
+        </td>
+      </tr> {% endfor %}
+    </tbody>
+  </table>
+</div> {% endblock %}
