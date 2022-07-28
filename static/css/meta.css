@@ -191,7 +191,8 @@
  font-size: 13px
 }
  .tileft {
- text-align: left !important
+ text-align: left !important;
+ padding-left: 10px !important;
 }
  .controls {
  margin: auto;
