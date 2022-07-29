@@ -20,27 +20,29 @@ def striphtml(data):
 
 def search(request):
     getsearch = request.GET.get('text_contains')
+    #see if filter is applied
     getfilter = request.GET.get('f')
     main_result_list = []
     error = ''
-
     textidlist = []
+    
     #grabs all the unique text ids for search results. used in filter
-    def getTextID(results):
+    def getTextID(sr_results):
         x = 0
-        while x < len(results):
-            text = results[x]['Textid']
+        while x < len(sr_results):
+            text = sr_results[x]['Textid']
             x += 1
             if text in textidlist:
                 pass
             else:
                 textidlist.append(text)
+
     #grabs all the unique author ids for search results. used in filter
     authidlist = []
-    def getAuthID(results):
+    def getAuthID(sr_results):
         x = 0
-        while x < len(results):
-            auth = results[x]['AuthID']
+        while x < len(sr_results):
+            auth = sr_results[x]['AuthID']
             x += 1
             if auth in authidlist:
                 pass
@@ -48,19 +50,19 @@ def search(request):
                 authidlist.append(auth)
 
     #results function
-    def Results(pages):
+    def srResults(pages):
 
         preview = ''
         #gets each page term is found, tokenizes the page, and grabs the term from the text
         for page in getpages:
             tokenized = Page.getContent(page).split()
             #grabs all words that contain search term, e.g. search is "ab" will get "bab" "abc" etc.
-            results = list(filter(lambda x: getsearch in x, tokenized))
-            for result in results:
+            sr_results = list(filter(lambda x: getsearch in x, tokenized))
+            for sr_res in sr_results:
                 tokenized = Page.getContent(page).split()
                 #adds html code to identify the term
-                for index in indices(tokenized, result):
-                    tokenized[index] = "<span style=\"color:red;font-weight:bold\">" + result + "</span>"
+                for index in indices(tokenized, sr_res):
+                    tokenized[index] = "<span style=\"color:red;font-weight:bold\">" + sr_res + "</span>"
                     startprev = []
                     endprev = []
                     preview = ''
@@ -82,7 +84,7 @@ def search(request):
                         pr_end -= 1
                     #creates the preview
                     preview = striphtml(" ".join(startprev)) + "<span style=\"color:red;font-weight:bold\"> " + striphtml(
-                        result) + " </span>" + striphtml(" ".join(endprev))
+                        sr_res) + " </span>" + striphtml(" ".join(endprev))
             #pulls data for text in each result
             sin_result_list = Page.getInfo(page)
             sin_result_list['Term'].append(preview)
@@ -95,7 +97,7 @@ def search(request):
     if getsearch != '' and getsearch is not None and " " not in getsearch and getfilter != '1':
         getpages = Page.objects.filter(pg_cont__icontains=getsearch
             ).order_by('text__title_ar')
-        Results(getpages)
+        srResults(getpages)
         if len(main_result_list) < 1:
             error = "No results found."
             print(error)
@@ -108,13 +110,13 @@ def search(request):
             for auth in filterdict['a']:
                 getpages = Page.objects.filter(text_id__au_id=auth
                     ).filter(pg_cont__icontains=getsearch).order_by('text__title_ar')
-                Results(getpages)
+                srResults(getpages)
         #check if any text filters are used and filter
         elif "t" in filterdict:
             for text in filterdict['t']:
                 getpages = Page.objects.filter(text_id=text).filter(
                 	pg_cont__icontains=getsearch).order_by('text__title_ar')
-                Results(getpages)
+                srResults(getpages)
     #errors
     elif getsearch is '':
         error = "No search term provided"
@@ -150,10 +152,10 @@ def results(request, text_id, pgid):
     #tokenizes the page, finds search term, replaces it with term+html code, rejoins
     if term != '' and term is not None:
         rpage = Page.objects.get(pg_id=pgid).pg_cont.split()
-        results = list(filter(lambda x: term in x, rpage))
-        for result in results:
-            for index in indices(rpage, result):
-                rpage[index] = "<span style=\"color:red;font-weight:bold\">" + striphtml(result) + "</span>"
+        sr_results = list(filter(lambda x: term in x, rpage))
+        for sr_res in sr_results:
+            for index in indices(rpage, sr_res):
+                rpage[index] = "<span style=\"color:red;font-weight:bold\">" + striphtml(sr_res) + "</span>"
         highlighted = " ".join(rpage)
 
     context = {

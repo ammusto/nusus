@@ -1,10 +1,9 @@
 {% extends 'base.html' %} {% block content %} 
 <div class="fixedtext">
   <h2> Browse the Corpus</h2>
-  <p>Here you can find a table of all of the texts currently in this corpus. More information about the text and/or author can be found through clicking on their respective name. Each text is based on a published edition, which can be found on each text's respective page.</p>
+  <p>Here you can find a table of all of the texts currently in this corpus. More information about the text and/or author can be found through clicking on their respective name. Each text is based on a published edition, which can be found on each text's details page.</p>
   <p>Clicking read will take you to our online reader. The search column signifies whether the text is available to search and, finally, if the raw text file is available you can find it in the File column.</p>
-  <p>In terms of copyright, this project is in alignment with <a href="https://openiti.org/docs/Copyright_Questions.html">OpenITI's position</a>. In brief, because these texts were originally written prior to 1900, they are in the public domain.</p>
-  <p>If you notice any errors please <a href="mailto:amusto@nyu.edu">report them</a>--thank you!.</p>
+  <p>As this this project is still in its beta phase, we are still in the process of correcting the OCR, but if you notice any significant errors please <a href="mailto:amusto@nyu.edu">report them</a>--thank you!.</p>
 </div>
 <div class="fixedtext">
   <table width=100% class='crptable'>
@@ -27,7 +26,7 @@
         <td class='tileft'>
           <a href="{% url 'au_detail' pk=tentry.au_id.pk %}">{{ tentry.au_id.au_sh }} (d. {{ tentry.au_id.date}})</a>
         </td>
-        <td>{% if tentry.avail_read == 1 %} <a href="../read/{{ tentry.pk}}">Link</a> {%else%} N/A {% endif %} </td>
+        <td class="searchable">{% if tentry.avail_read == 1 %} <a href="../read/{{ tentry.pk}}">Link</a> {%else%} N/A {% endif %} </td>
         <td class="searchable">{% if tentry.avail_read == 1 %}Yes{% else %}No{% endif %}</td>
         <td>N/A</td>
       </tr> {% endfor %} </tbody>

@@ -432,3 +432,31 @@ input {
   border-radius:100%;
   border:6px solid #000000;
 }
+.fixed_left
+{
+float: left;
+width: 50%;
+}
+.fixed_right
+{
+  float: right;
+  width: 50%;
+}
+.corp_stats
+{
+  color: #3078b0;
+  font-weight: 600;
+}
+#git_footer
+{
+  width: 32px;
+  display: inline;
+}
+.searchable
+{
+  font-weight: 600;
+}
+.changelog
+{
+  vertical-align:top;
+}
