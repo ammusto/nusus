@@ -9,10 +9,10 @@
 <div class="fixedtext">
   <h2>Corpus Changelog</h2>
   <div class="corpus_upd"> {% if update.object_list %} <table width="100%" padding-left="25px"> {% for content in update.object_list %} <tr>
-        <td width="15%" class="changelog">Version {{ content.vers }}
+        <td width="20%" class="changelog">Version {{ content.vers }}
           </a>
         </td>
-        <td width="60%" class="changelog">{{ content.post }}</td>
+        <td width="55%" class="changelog">{{ content.post }}</td>
         <td width="25%" class="changelog">{{content.date.date}} </td>
       </tr>
       <tr></tr> {% endfor %} </tbody>
