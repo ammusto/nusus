@@ -460,3 +460,7 @@ width: 50%;
 {
   vertical-align:top;
 }
+.read_display p
+{
+  margin-top: 10px;
+}

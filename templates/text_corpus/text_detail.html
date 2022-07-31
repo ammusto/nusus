@@ -20,6 +20,10 @@
         </td>
       </tr>
       <tr class='tr_au'>
+        <td></td>
+        <td>{{ text.au_id.au_ar }}</td>
+      </tr>
+      <tr class='tr_au'>
         <td class="au_left">Base Edition: </td> 
         {% if text.perm == '0' %} 
           <td>{{ text.permbib|safe }}</td> 
@@ -36,10 +40,10 @@
       </tr>
       <tr>
         <td class="au_left">PDF:</td> 
-        {% if text.editions == '0' %} 
+        {% if text.pdf == '0' %} 
           <td>N/A</td> 
         {% else %} <td>
-          <a href="{{ text.editions }}" target="_blank" rel="noopener noreferrer">Here</a>
+          <a href="{{ text.pdf }}" target="_blank" rel="noopener noreferrer">Here</a>
         </td> 
         {% endif %}
       </tr> 
