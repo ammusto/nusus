@@ -18,7 +18,6 @@ class Text(models.Model):
     word_len = models.IntegerField()
     source = models.TextField()
     added = models.DateTimeField(default=timezone.now)
-    added_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     published_date = models.DateTimeField(blank=True, null=True)
     avail_read = models.BooleanField()
 
