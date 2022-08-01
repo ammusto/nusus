@@ -339,7 +339,8 @@
 }
  .au_left {
  width: 17%;
- font-weight: 500
+ font-weight: 500;
+ text-align: right;
 }
  input[type="search"]::-webkit-search-cancel-button {
  /* Remove default */

@@ -53,6 +53,7 @@ class Author(models.Model):
     au_ar = models.CharField(max_length = 250)
     sh_ar = models.CharField(max_length = 50)
     date = models.CharField(max_length = 50)
+    incrp = models.IntegerField()
     bio = models.TextField()
     cit = models.TextField()
 

@@ -31,7 +31,7 @@ def page_not_found_view(request, exception):
 def corpus(request):
     texts = Text.objects.all()
     txt_cnt = texts.count()
-    au_cnt = Author.objects.all().count()
+    au_cnt = Author.objects.filter(incrp=1).count()
     pg_cnt = Page.objects.all().count()
 
     #function to get the total words in corpus
