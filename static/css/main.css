@@ -80,6 +80,9 @@ tr {
   color: #FFFFFF;
   font-weight: 400
 }
+.hlink a:hover {
+  color: #b06830;
+}
 .linkcenter {
   margin: auto;
   height: 50px;
