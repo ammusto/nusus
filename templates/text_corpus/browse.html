@@ -1,34 +1,76 @@
-{% extends 'base.html' %} {% block content %} 
+
+{% extends 'base.html' %}{% load page_url %} {% block content %} 
 <div class="fixedtext">
   <h2> Browse the Corpus</h2>
-  <p>Here you can find a table of all of the texts currently in the nuṣūṣ corpus. More information about the text and/or author can be found through clicking on their respective name.</p>
-  <p>Clicking read will take you to our online reader. The search column signifies whether the text is available to search and, finally, if the raw text file is available you can find it in the File column.</p>
-  <p>As this this project is still in its beta phase, we are still in the process of correcting the OCR, but if you notice any significant errors please <a href="mailto:nususcorpus@gmail.com">report them</a>--thank you!.</p>
+  <p>Here you can browse and search through the metadata of the texts currently in the nuṣūṣ corpus.</p>
+  <p>Not all texts in the corpus are currently available to be searched or read. The status marker in the right column signifies the availability and OCR status of the texts. If the circle is half full or more then some version of the text is accesible on nuṣūṣ.</p>
+  <p>As this project is still in its beta phase, we are still in the process of correcting the OCR, but if you notice any significant errors please <a href="mailto:nususcorpus@gmail.com">notify us</a></p>
+</div>
+<div class="search_form">
+  <form>
+    <select id="filter" name="f" style="margin-top:-1px">
+      <option value="0">All Fields</option>
+      <option value="1">Title</option>
+      <option value="2">Author</option>
+      <option value="3">Genre</option>
+    </select>
+    <input type="search" name="s" placeholder="Contain..."> <input value="Search" type="submit">
+  </form>
+</div>
+{% if tentry %}
+  <div class="error">
+  {% if br_sr %}
+  <span style="text-align:center;">Search results for '{{br_sr}}'</span><p>
+  {% endif %}
 </div>
 <div class="fixedtext">
   <table width=100% class='crptable'>
-    <thead>
+    <thead class="crphead">
       <tr>
-        <th>{% if direct == 'desc' %} <a href="./?order=tid">{% else %} <a href="./?order=tid&d=desc">{% endif %}Text ID</a>
+        <th id="crp_src">Source</th>
+        <th id="crp_gen">Category</th>
+        <th id="crp_titl">{% if direct == 'desc' %} <a href="./?order=ti{{link}}">{% else %} <a href="./?order=ti&d=desc{{link}}">{% endif %}{% if order == 'title_ar' or order == '-title_ar' %}<span style="font-weight: 500;">Title &#8597;</span>{% else %}Title &#8597;{% endif %}</a></th>
+
+        <th id="crp_au">{% if direct == 'desc' %} <a href="./?order=au{{link}}">{% else %} <a href="./?order=au&d=desc{{link}}">{% endif %}{% if order == 'au_id__au_sh' or order == '-au_id__au_sh'%}<span style="font-weight: 500">Author &#8597;</span>{% else %}Author &#8597;{% endif %}</a></th>
+        <th id="crp_date">{% if direct == 'desc' %} <a href="./?order=da{{link}}">{% else %} <a href="./?order=da&d=desc{{link}}">{% endif %}{% if order == 'au_id__date' or order == '-au_id__date'%}<span style="font-weight: 500">Date &#8597;</span>{% else %}Date &#8597;{% endif %}</a></th>
+        <th id="crp_tid">{% if direct == 'desc' %} <a href="./?order=tid{{link}}">{% else %} <a href="./?order=tid&d=desc{{link}}">{% endif %}{% if order == 'text_id' or order == '-text_id'%}<span style="font-weight: 500">Text ID &#8597;</span>{% else %}Text ID &#8597;{% endif %}</a>
         </th>
-        <th>{% if direct == 'desc' %} <a href="./?order=ti">{% else %} <a href="./?order=ti&d=desc">{% endif %}Title </th>
-        <th>{% if direct == 'desc' %} <a href="./?order=au">{% else %} <a href="./?order=au&d=desc">{% endif %}Author </th>
-        <th>Read</th>
-        <th>Search</th>
-        <th>File</th>
       </tr>
     </thead>
-    <tbody> {% for tentry in tentry %} <tr>
-        <td>{{ tentry.text_id }}</td>
-        <td class='tileft'>
-          <a href="{% url 'text_detail' pk=tentry.pk %}">{{ tentry.title_tl }}</a>
+    <tbody> {% for tentry in tentry.object_list %} <tr>
+        <td class="brbig">{{ tentry.source }}</td>
+        <td class="tileft" id="genre">
+          <span style="font-size: 16px;font-weight: 500"><em>{{ tentry.genre }}</em></span><br>
+          <em>{{ tentry.style }}</em>
         </td>
-        <td class='tileft'>
-          <a href="{% url 'au_detail' pk=tentry.au_id.pk %}">{{ tentry.au_id.au_sh }} (d. {{ tentry.au_id.date}})</a>
+        <td class='tileft brbig'>
+          <span style="font-size: 18px;font-weight: 500"><a href="{% url 'text_detail' pk=tentry.pk %}">{{ tentry.title_ar }}</span><br>
+          <em>{{ tentry.title_tl }}</em></a>
         </td>
-        <td class="searchable">{% if tentry.avail_read == 1 %} <a href="../read/{{ tentry.pk}}">Link</a> {%else%} N/A {% endif %} </td>
-        <td class="searchable">{% if tentry.avail_read == 1 %}Yes{% else %}No{% endif %}</td>
-        <td>N/A</td>
+        <td class='tileft brbig'>
+          <span style="font-size: 18px;font-weight: 500"><a href="{% url 'au_detail' pk=tentry.au_id.pk %}">{{ tentry.au_id.sh_ar }}</span><br> {{ tentry.au_id.au_sh }}</a>
+        </td>
+        <td class="brbig">{{ tentry.au_id.date }}</td>
+        <td id ="id_status"><span style="font-weight: 500">nususID_{{ tentry.text_id|stringformat:"03d" }}</span><br>status: {% if tentry.status == 1 %}<span title="Metadata Available" style="font-size:16px">&#9684;</span>
+          {% elif tentry.status == 2 %}<span title="Uncorrected Text Available" style="font-size:14px">&#9681;</span>
+          {% elif tentry.status == 3 %}<span title="Fully Available in Corpus">&#11044;</span>
+          {% else %}<span title="Accessible in Corpus">&#9898;</span>
+        {% endif %}</td>
       </tr> {% endfor %} </tbody>
   </table>
+  <div class="controls">
+    {% for page in tentry.paginator.page_range %}
+       {% if forloop.counter != 1 %} | {% endif %}
+    {% if page|slugify == curpg %}
+     <span style="font-weight:500;">{{ page }}</span>
+     {% else %}
+     <a href="?{% url_replace page=page %}">{{ page }}</a>
+     {% endif %}
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="error">
+  No Results Found
+  </div>
+  {% endif %}
 </div>{% endblock %}

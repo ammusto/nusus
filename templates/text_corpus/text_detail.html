@@ -4,13 +4,12 @@
     <tbody>
       <tr class='tr_au'>
         <td colspan="2">
-          <h4>
-            <a href="">{{ text.title_tl }}</a>
+          <h2><a href="">&emsp;{{ text.title_tl }}</a></h2>
         </td>
       </tr>
       <tr class='tr_au'>
         <td colspan="2">
-          <h4>{{ text.title_ar }}</h4>
+          <h4>&emsp;&emsp;{{ text.title_ar }}</h4>
         </td>
       </tr>
       <tr class='tr_au'>
@@ -33,9 +32,24 @@
         {% endif %}
       </tr>
       <tr class='tr_au'>
+        <td class="au_left">Genre: </td>
+        <td>{{ text.genre}}
+        </td>
+      </tr>
+      <tr class='tr_au'>
+        <td class="au_left">Format: </td>
+        <td><em>{{ text.style}}</em>
+        </td>
+      </tr>
+      <tr class='tr_au'>
         <td class="au_left">Length: </td>
-        <td>{{ text.pg_len }} pages
+        <td>{{ text.pg_len }} page(s)
           <br>{{ text.word_len}} words
+        </td>
+      </tr>
+      <tr class='tr_au'>
+        <td class="au_left">Source: </td>
+        <td>{{ text.source}}
         </td>
       </tr>
       <tr>
@@ -56,10 +70,10 @@
         </td>
       </tr> 
       {% endfor %} 
-      {% if text.avail_read == 1 %} <tr>
+      {% if text.status == 3 %} <tr>
         <td class="au_left">Read in Corpus:</td>
         <td>
-          <a href='../../read/{{ text.text_id }}'>Here</a>
+          <a href='../../read/{{ text.text_id }}' target="_blank">Open Reader</a>
         </td>
         </td>
       </tr> 

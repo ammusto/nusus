@@ -5,6 +5,7 @@ from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 from django.shortcuts import render
 from .models import CorpusUp
+from django.db.models import Q
 from text_corpus.models import Page, Text, Author
 import requests
 import re
@@ -29,7 +30,7 @@ def page_not_found_view(request, exception):
     return render(request, '404.html', status=404)
     
 def corpus(request):
-    texts = Text.objects.all()
+    texts = Text.objects.filter(~Q(status=1))
     txt_cnt = texts.count()
     au_cnt = Author.objects.filter(incrp=1).count()
     pg_cnt = Page.objects.all().count()

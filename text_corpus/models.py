@@ -8,7 +8,8 @@ class Text(models.Model):
     title_tl = models.CharField(max_length=250)
     title_ar = models.CharField(max_length=250)
     au_id = models.ForeignKey('Author', on_delete = models.CASCADE)
-    gen_id = models.ForeignKey('Genre', on_delete = models.CASCADE)
+    style = models.CharField(max_length=25)
+    genre = models.CharField(max_length=25)
     descr = models.TextField()
     perm = models.TextField()
     permbib = models.TextField()
@@ -17,9 +18,7 @@ class Text(models.Model):
     pg_rng = models.CharField(max_length=25)
     word_len = models.IntegerField()
     source = models.TextField()
-    added = models.DateTimeField(default=timezone.now)
-    published_date = models.DateTimeField(blank=True, null=True)
-    avail_read = models.BooleanField()
+    status = models.IntegerField()
 
     def publish(self):
         self.save()

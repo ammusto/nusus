@@ -5,20 +5,19 @@
       <tr class='tr_au'>
         <td colspan="2">
           <h2>
-            <a href="">{{ author.au_tl }}</a> <span style="font-size: 20px">({{ author.date }})</span></h2> 
+            <a href="">&emsp;{{ author.au_tl }}</a> <span style="font-size: 25px">(d. {{ author.date }})</span></h2> 
         </td>
       </tr>
       <tr class='tr_au'>
         <td colspan="2">
-          <h4>
+          <h4>&emsp;&emsp;
             {{ author.au_ar }}
         </td>
       </tr>
       <tr class='tr_au'>
         <td class="au_left">bio:</td>
         <td> {{ author.bio|safe }}
-          <br>
-          <br> Taken from: <br>{{ author.cit }}
+          <br><br> <em>Biography source:</em> <br>{{ author.cit }}
         </td>
       </tr>
       <tr>

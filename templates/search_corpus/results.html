@@ -1,32 +1,20 @@
-{% extends 'base.html' %} {% block content %} 
+{% extends 'base.html' %} 
+{% load static %}
+{% block header %}
+{% endblock header %} {% block linkcenter %}
+linkrere
+{% endblock linkcenter %}{% block content %} 
+
 <div class="read_container">
-  <div class="read_info">
-    <table width="100%">
-      <tbody>
-        <tr class='tr_au'>
-          <td colspan="2">
-            <h4>
-              <a href="/text/{{ text.text_id }}">{{ text }}</a>
-            </h4>
-          </td>
-        </tr>
-        <tr class='tr_au'>
-          <td>
-            <h4>{{ text.title_ar }}</h4>
-          </td>
-          <td></td>
-        </tr>
-        <tr class='tr_au'>
-          <td>
-            <a href="/author/{{text.au_id.au_id}}">By: {{ text.au_id }}</a> (d. {{ text.au_id.date}})
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
   <div class="read_display" dir="rtl">
-    {{ highlighted|safe }}
-  </div>
+    <div class="read_info" name="top">
+    <h4>
+      <a href="/text/{{ text.text_id }}">{{ text.title_ar }}</a>
+    </h4>
+    </div> 
+    {{ highlighted|safe }}<br><br>{% for content in ppage.object_list %}
+    <div class="pgnumb">{{content.pg_num}}</div>{%endfor%}
+  </div> 
   <div class="controls"> 
   	{% if ppage.has_previous %} 
   	<a class='rnav' href="?page={{ ppage.previous_page_number }}">&ensp;< </a> 
@@ -53,5 +41,4 @@
       <input type="search" name="page" placeholder="go to" style="width:40px; height:20px;text-align:center">
       <input type="submit" hidden />
     </form>
-  </div>
-</div> {% endblock %}
+  </div> {% endblock %}
