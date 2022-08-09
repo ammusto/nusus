@@ -16,7 +16,6 @@ def home(request):
     update_paginator = Paginator(updates, 5)
     page_num = request.GET.get('page')
     disp_up = update_paginator.get_page(page_num)
-    print(updates)
     context = {
         'update': disp_up,
         'count': update_paginator.num_pages,

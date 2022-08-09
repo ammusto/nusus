@@ -5,6 +5,8 @@ from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 from django.shortcuts import render
 from text_corpus.models import Page, Text, Author
+from camel_tools.morphology.database import MorphologyDB
+from camel_tools.morphology.analyzer import Analyzer
 import requests
 import re
 
@@ -16,6 +18,23 @@ def indices(lst, item):
 def striphtml(data):
     p = re.compile(r'<.*?>')
     return p.sub('', data)
+
+def getPhrase(textinput):
+    tokenized = textinput.split()
+    term_list = request.GET.get('text_contains').split()
+    sr_results = list(filter(lambda x: term_list[0] in x, tokenized))
+    results_index = []
+    if len(term_list) > 1:
+        for index in indices(tokenized, sr_results[0]):
+            if index <= len(tokenized) - len(term_list):
+                i = 0
+                while i < len(term_list) and term_list[i] == tokenized[index + i]:
+                    i += 1
+                if i == len(term_list):
+                    results_index.append(index)
+    else:
+        print("One word search")
+    return results_index
 
 
 def search(request):
@@ -118,7 +137,7 @@ def search(request):
                 	pg_cont__icontains=getsearch).order_by('text__title_ar')
                 srResults(getpages)
     #errors
-    elif getsearch is '':
+    elif getsearch == '':
         error = "No search term provided"
     elif getsearch is None:
         error = ''
