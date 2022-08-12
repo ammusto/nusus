@@ -9,7 +9,7 @@ class Text(models.Model):
     title_ar = models.CharField(max_length=250)
     au_id = models.ForeignKey('Author', on_delete = models.CASCADE)
     style = models.CharField(max_length=25)
-    genre = models.CharField(max_length=25)
+    genre = models.ForeignKey('Genre', on_delete = models.CASCADE)
     descr = models.TextField()
     perm = models.TextField()
     permbib = models.TextField()
@@ -61,6 +61,7 @@ class Author(models.Model):
 
 class Genre(models.Model):
     gen_id = models.IntegerField(primary_key=True)
-    genre = models.CharField(max_length = 100)
+    gen_en = models.CharField(max_length = 100)
+    gen_ar = models.CharField(max_length = 100)
     def __str__(self):
-        return self.genre
+        return self.gen_en

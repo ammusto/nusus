@@ -68,12 +68,14 @@ def browse(request):
         tentry = crpPage(Text.objects.order_by(textOrder()))
     #no filter
     elif br_sr != '' and br_fl == '0':
+        PP = Q(title_ar__icontains=br_sr) 
         tentry = crpPage(Text.objects.filter(
             Q(title_tl__icontains=br_sr) |
             Q(title_ar__icontains=br_sr) |
             Q(au_id__au_tl__icontains=br_sr) |
             Q(au_id__au_ar__icontains=br_sr) |
-            Q(genre__icontains=br_sr)
+            Q(genre_id__gen_en__icontains=br_sr) |
+            Q(genre_id__gen_ar__icontains=br_sr)
             ).order_by(textOrder()))
         link = getLink()
     #title filter

@@ -1,49 +1,111 @@
-{% extends 'base.html' %} {% block content %} 
+{% extends 'base.html' %}{% load static %}{% block page_scripts %} <script src="{% static 'jquery/filter.js' %}"></script>{% endblock %} {% block content %} 
+<div class="filter_search top">
+
+<div class="filter_title" > Search </div>
+<div class="filter_buttons">
+  
+  <button class="filter filter_blue" onclick="openFilter(event, 'Texts'); uncheckAll()">By Title</button>
+  <button class=" filter" onclick="openFilter(event, 'Authors'); uncheckAll()">By Author</button>
+  <button class="filter" onclick="openFilter(event, 'Genres'); uncheckAll()">By Genre</button>
+
+
+</div>
+
+<div class="filter_contents">
+  <form onsubmit="disableEmptyInputs(this)">
+  <div id="Texts" class="fcontent" style="">
+    <input type="text" id="textlist" class="searchlist" onkeyup="filterText()" placeholder="Filter Titles" title="Type in a name">
+    <ul id="textitems" class="scroll_y searchitems">
+      {% for text in texts %}
+      <li><label>{{text.title_ar}} - {{text.au_id.sh_ar}} ({{text.au_id.date}}) <input type="checkbox" id="{{ text.text_id }}" name="t" value="{{ text.text_id }}"></label></li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div id="Authors" class="fcontent" style="display:none">
+    <input type="text" id="authorlist" class="searchlist" onkeyup="filterAuthor()" placeholder="Filter Authors" title="Type in a name">
+    <ul id="authoritems" class="scroll_y searchitems">
+      {% for author in authors %}
+      <li><label>({{author.date}}) {{ author.au_ar }} <input type="checkbox" id="{{ author.au_id }}" name="a" value="{{ author.au_id }}"></label></li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div id="Genres" class="fcontent" style="display:none">
+    <input type="text" id="genrelist" class="searchlist" onkeyup="filterGenre()" placeholder="Filter Genres" title="Type in a name">
+    <ul id="genreitems" class="scroll_y searchitems">
+      {% for genre in genres %}
+      <li><label>{{ genre.gen_ar }} <input type="checkbox" id="{{ genre.gen_id }}" name="g" value="{{ genre.gen_id }}"></label></li>
+      {% endfor %}
+    </ul>
+  </div>
+
+</div>
 <div class="search_form">
-  <form>
-    <input type="search" name="text_contains" placeholder="Text Contains..."> <input value="Search" type="submit">
+    
+    <input class="search_term" type="search" name="s" placeholder="Text Contains..." required > <select id= "oper1" name="op" class="select_op"><option disabled="disabled" selected="selected"></option><option value="a">AND</option><option value="o">OR</option></select>
+    <input id="search2" class="search_term" type="search" name="s" placeholder="Text Contains..."  onchange="updateRequirements();" > <select id="oper2" name="op" class="select_op"><option disabled="disabled" selected="selected"></option><option value="a">AND</option><option value="o">OR</option></select>
+    <input id="search3" class="search_term" type="search" name="s" placeholder="Text Contains..."  onchange="updateRequirements2();"><br><br>
+    &emsp;&emsp;<input value="Search" type="submit">
   </form>
+</div>
+
+
 </div> 
+
+
 {% if main_result_list %} 
 <div class="filter_search">
-  <div class="filter_title"> Filter Search </div>
+  <div class="filter_title" onclick="toggleFilter()"> Filter Results &#8597;</div>
+  <div id="filter_container">
   <div class="filter_auth">
-    <form name="filter">Select Authors: <br> {% for item in filterauth %} <div class="search_result">
-        {{item.sh_ar}}
-        <input type="checkbox" id="{{ item.au_id }}" name="a" value="{{ item.au_id }}">
-      </div> {% endfor %} <input type="hidden" name="text_contains" value="{{getsearch}}">
-      <input type="hidden" name="f" value="1">
+
+
+    <form name="filter">
+
+      <input type="text" id="authres" class="searchlist" onkeyup="filAuthRes()" placeholder="Type to Filter Authors" title="Type in a name">
+      <ul id="authresitems" class="filteritems scroll_y">
+      {% for item in filterauth %}
+      <li><label>({{item.date}}) {{ item.au_ar }} <input type="checkbox" id="{{ item.au_id }}" name="a" value="{{ item.au_id }}"></label></li>
+      {% endfor %}
+      </ul>
+
+      {% for search in getsearch %}
+      <input type="hidden" name="s" value="{{search}}">
+      {% endfor %}
+      {% for oper in opers %}
+      <input type="hidden" name="op" value="{{oper}}">
+      {% endfor %}
       <div class="filterbtn_div">
         <input value="Filter" type="submit">
       </div>
     </form>
   </div>
   <div class="filter_texts">
-    <form name="filter"> Select Texts: <br> 
-        {% for item in filteritems %} 
-        <div class="search_result">
-            {{item.title_ar}}
-        <input type="checkbox" id="{{ item.text_id }}" name="t" value="{{ item.text_id }}">
-        </div> 
-        {% endfor %} 
-      <input type="hidden" name="text_contains" value="{{getsearch}}">
-      <input type="hidden" name="f" value="1">
-      <div class="filterbtn_div">
-        <input value="Filter" type="submit">
-      </div>
+    <form name="filter">
+      <input type="text" id="textres" class="searchlist" onkeyup="filTextRes()" placeholder="Type to Filter Texts" title="Type in a name">
+      <ul id="textresitems" class="filteritems scroll_y">
+      {% for text in filteritems %}
+      <li><label>{{text.title_ar}} - {{text.au_id.sh_ar}} ({{text.au_id.date}}) <input type="checkbox" id="{{ text.text_id }}" name="t" value="{{ text.text_id }}"></label></li>
+      {% endfor %}
+      </ul>
+      <input type="hidden" name="s" value="{{getsearch.0}}">
+              <input value="Filter" type="submit">
+
   </div>
 </div>
 </form>
+</div>
 <table class="search_results">
   <tbody>
-    <tr>
+    <tr style="line-height:19px">
       <th class="td_sr th_sr">Pg </td>
       <th class="td_sr td_result th_sr">Result </td>
       <th class="td_sr th_sr">Source </td>
     </tr> 
     {% for text in main_result_list %} <tr>
       <td class="td_sr">
-        <a href="../results/{{text.Textid}}/{{text.PgID}}/?t={{getsearch}}" target="_blank" rel="noopener noreferrer">{{ text.Page }}</a>
+        <a href="../results/{{text.Textid}}/{{text.PgID}}/?t={{getsearch.0}}" target="_blank" rel="noopener noreferrer">{{ text.Page }}</a>
       </td>
       <td class="td_sr">{{ text.Term.0|safe }}</td>
       <td class="td_sr">

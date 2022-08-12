@@ -62,7 +62,7 @@ tr {
 }
 .hheader {
   font-family: 'Francois One';
-  font-size: 48px;
+  font-size: 72px;
   color: black !important;
 }
 .hheader a {
@@ -92,11 +92,11 @@ tr {
   display: flex;
   justify-content: center
 }
-li {
+.hlink li {
   float: left;
   padding: 12px
 }
-ul {
+.hlink ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -289,12 +289,6 @@ h1 {
   height: 100%;
   width: 100%
 }
-.search_form {
-  text-align: center;
-  width: 100%;
-  height: 100%;
-  margin-bottom: 20px
-}
 .search_results {
   width: 100%;
   border: 1px solid;
@@ -326,6 +320,12 @@ table.search_results tr:nth-child(even) {
   font-weight: 500;
   text-align: right
 }
+.browse_search {
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  margin-bottom: 20px;
+}
 input[type="search"]::-webkit-search-cancel-button {
   
   -webkit-appearance: none
@@ -343,32 +343,31 @@ input[type="search"]::-webkit-search-cancel-button {
   height: 90%;
   margin-bottom: 10px;
   width: 100%;
-  border: 1px solid
+  border: 1px solid;
+  border-bottom: 0px;
 }
 .filter_texts {
   display: inline-block;
-  height: 100%;
-  padding: 1%;
+  height: 200px;
   text-align: center;
-  width: 69%;
+  width: 60%;
   font-size: 14px;
   border-left: 1px solid;
-  font-weight: 500
+  float: right;
 }
 .filter_auth {
   text-align: center;
-  width: 29%;
+  width: 40%;
   display: inline-block;
-  height: 100%;
-  padding: 1%;
+  min-height: 200px;
   border-right: 0px;
   font-size: 14px;
-  font-weight: 500
 }
 .filter_sub {
   float: right;
   width: 100%
 }
+
 .filter_title {
   text-align: center;
   height: 30px;
@@ -378,25 +377,109 @@ input[type="search"]::-webkit-search-cancel-button {
   color: #FFFFFF;
   font-weight: 400;
   border-bottom: 1px solid;
-  border-color: #000000
+  border-color: #000000;
+  cursor: pointer;
+}
+#filter_container {
+  display: none;
+  border-bottom: 1px solid black;
 }
 .th_sr {
   background-color: #3078b0;
   font-size: 16px;
   color: #FFFFFF;
   font-weight: 400;
-  border-color: #000000
+  border-color: #000000;
+  height: 30px;
 }
 .filterbtn_div {
   width: 100%;
   text-align: center;
-  margin-top: 10px;
-  float: right
+  margin-bottom: 10px;
+}
+.filter {
+    width: 100%;
+    display: block;
+    padding: 4px 8px;
+    text-align: left;
+    white-space: normal;
+    border: none;
+    float: none;
+    outline: 0;
+    background-color: #FFFFFF;
+    color: #000000;
+}
+.filter_blue {
+  background: #3078b0;
+  color: #ffffff;
+  border: 1px solid black;
+  border-left: 0px;
+  border-right: 0px;
+}
+.filter_buttons {
+  padding-top: 70px;
+float: right;
+width: 100px;
+border-left: 1px solid;
+height: 270px;
+}
+.filter_search.top {
+  height: 300px;
+  overflow: hidden;
+  border-bottom: 1px solid black;
 }
 .error{
   font-size: 16px;
   text-align: center !important;
   width: 100%
+}
+.filter_contents {
+  float: right;
+  width: 500px;
+  height: 270px;
+  border-left: 1px solid;
+}
+.search_form {
+  padding-top: 50px;
+  float: right;
+  text-align: left;
+  width: 300px;
+  height: 270px;
+}
+.search_term {
+  margin-bottom: 10px;
+  text-align: right;
+  width: 220px;
+  height: 29px;
+}
+.select_op{
+  height: 29px;
+  margin-bottom: 10px;
+  display: inline;
+}
+.searchlist
+{
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid #CCCCCC;
+}
+.searchitems
+{
+  padding-right: 20px;
+  height: 240px;
+}
+.scroll_y
+{  
+  overflow:hidden;
+  overflow-y:auto;
+  list-style-type: none;
+  text-align: right;
+  padding-right: 20px;
+}
+.filteritems
+{
+  width: 100%;
+  height: 150px;
 }
 input {
   text-align: center

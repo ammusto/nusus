@@ -4,148 +4,169 @@ from django.views.generic import ListView
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 from django.shortcuts import render
-from text_corpus.models import Page, Text, Author
-from camel_tools.morphology.database import MorphologyDB
-from camel_tools.morphology.analyzer import Analyzer
+from text_corpus.models import Page, Text, Author, Genre
+from django.db.models import Q
 import requests
 import re
 
 # find all instances of search term in tokenized page, used in search and search results
-def indices(lst, item):
-    return [i for i, x in enumerate(lst) if x == item]
+def indices(lst, items):
+    master_index = []
+    for term in items:
+        ind_index = [i for i, x in enumerate(lst) if x == term]
+        master_index.append(ind_index)
+
+    flat_list = [item for sublist in master_index for item in sublist]
+    
+    return sorted(flat_list)
 
 # strip html tags from string. used to display text in search results
 def striphtml(data):
     p = re.compile(r'<.*?>')
     return p.sub('', data)
 
-def getPhrase(textinput):
-    tokenized = textinput.split()
-    term_list = request.GET.get('text_contains').split()
-    sr_results = list(filter(lambda x: term_list[0] in x, tokenized))
-    results_index = []
-    if len(term_list) > 1:
-        for index in indices(tokenized, sr_results[0]):
-            if index <= len(tokenized) - len(term_list):
-                i = 0
-                while i < len(term_list) and term_list[i] == tokenized[index + i]:
-                    i += 1
-                if i == len(term_list):
-                    results_index.append(index)
-    else:
-        print("One word search")
-    return results_index
-
-
 def search(request):
-    getsearch = request.GET.get('text_contains')
-    #see if filter is applied
-    getfilter = request.GET.get('f')
+    sterms = request.GET.getlist('s')
+    opers = request.GET.getlist('op')
     main_result_list = []
     error = ''
+    getpages = None
+
+    #grabs all the unique author ids for search results. used in filter
+    authidlist = []
     textidlist = []
-    
-    #grabs all the unique text ids for search results. used in filter
-    def getTextID(sr_results):
-        x = 0
-        while x < len(sr_results):
-            text = sr_results[x]['Textid']
-            x += 1
+    def getSrFilter(result_list):
+        i = 0
+        while i < len(result_list):
+            auth = result_list[i]['AuthID']
+            text = result_list[i]['Textid']
+            i += 1
+            if auth in authidlist:
+                pass
+            else:
+                authidlist.append(auth)
             if text in textidlist:
                 pass
             else:
                 textidlist.append(text)
 
-    #grabs all the unique author ids for search results. used in filter
-    authidlist = []
-    def getAuthID(sr_results):
-        x = 0
-        while x < len(sr_results):
-            auth = sr_results[x]['AuthID']
-            x += 1
-            if auth in authidlist:
-                pass
-            else:
-                authidlist.append(auth)
+    #this should only be run if there is a search result
+    def getResult(pages):
+        prev_len = 12
+        for page in pages:
+            text = striphtml(Page.getContent(page))
+            i = 0
 
-    #results function
-    def srResults(pages):
-
-        preview = ''
-        #gets each page term is found, tokenizes the page, and grabs the term from the text
-        for page in getpages:
-            tokenized = Page.getContent(page).split()
-            #grabs all words that contain search term, e.g. search is "ab" will get "bab" "abc" etc.
-            sr_results = list(filter(lambda x: getsearch in x, tokenized))
-            for sr_res in sr_results:
-                tokenized = Page.getContent(page).split()
-                #adds html code to identify the term
-                for index in indices(tokenized, sr_res):
-                    tokenized[index] = "<span style=\"color:red;font-weight:bold\">" + sr_res + "</span>"
-                    startprev = []
-                    endprev = []
+            for sterm in sterms:
+                index = text.find(sterms[i])
+                if index != -1:
+                    prev_len = 30 - (len(sterms[i]) // 2)
+                    endprev = ''
                     preview = ''
-                    #grabs the terms that precedes & antecedes the search term to display in preview
-                    if int(index) - 3 > 0:
-                        pr_start = int(index) - 4
-                    else:
-                        pr_start = 0
-                    while pr_start < int(index):
-                        startprev.append(tokenized[pr_start])
-                        pr_start += 1
-                    if int(index) + 5 > len(tokenized):
-                        pr_end = len(tokenized) - 1
-                    else:
-                        pr_end = int(index) + 5
-                        pr_end -= 1
-                    while pr_end > int(index):
-                        endprev.insert(0, tokenized[pr_end])
-                        pr_end -= 1
-                    #creates the preview
-                    preview = striphtml(" ".join(startprev)) + "<span style=\"color:red;font-weight:bold\"> " + striphtml(
-                        sr_res) + " </span>" + striphtml(" ".join(endprev))
-            #pulls data for text in each result
-            sin_result_list = Page.getInfo(page)
-            sin_result_list['Term'].append(preview)
-            #adds each individual result to main result list
-            main_result_list.append(sin_result_list)
-            getTextID(main_result_list)
-            getAuthID(main_result_list)
+                    pr_start = 0 if index < prev_len else index - prev_len
+                    pr_end = len(text)-1 if index + prev_len + len(sterms[i]) > len(text
+                        )-1  else index + len(sterms[i]) + prev_len
+                    startprev = '' if pr_start == 0 else '...'
 
-    #runs search
-    if getsearch != '' and getsearch is not None and " " not in getsearch and getfilter != '1':
-        getpages = Page.objects.filter(pg_cont__icontains=getsearch
-            ).order_by('text__title_ar')
-        srResults(getpages)
-        if len(main_result_list) < 1:
-            error = "No results found."
-            print(error)
-    #runs search with filter activated
-    elif getfilter == '1':
-        filterdict = dict(request.GET)
-        print("filter")
-        #check if any author filters are used and filter
-        if "a" in filterdict:
-            for auth in filterdict['a']:
-                getpages = Page.objects.filter(text_id__au_id=auth
-                    ).filter(pg_cont__icontains=getsearch).order_by('text__title_ar')
-                srResults(getpages)
-        #check if any text filters are used and filter
-        elif "t" in filterdict:
-            for text in filterdict['t']:
-                getpages = Page.objects.filter(text_id=text).filter(
-                	pg_cont__icontains=getsearch).order_by('text__title_ar')
-                srResults(getpages)
-    #errors
-    elif getsearch == '':
-        error = "No search term provided"
-    elif getsearch is None:
+                    print(index)
+                    print(pr_start)
+                    print(pr_end)
+                    while pr_start < index: startprev += text[pr_start]; pr_start += 1
+                    while index  < pr_end-len(sterms[i]) : endprev += text[index+len(
+                        sterms[i])]; index += 1;
+
+                    endprev += '' if pr_end == range(len(text)-1) else '...'
+                    preview = startprev + "<span style=\"color:red;font-weight:bold\">" + sterms[i] + "</span>" + endprev
+                    sin_result = Page.getInfo(page)
+                    sin_result['Term'].append(preview)
+                    main_result_list.append(sin_result)
+                    getSrFilter(main_result_list)
+                    if opers and opers[0] != 'a':
+                        i += 1
+                    else:
+                        break
+                else:
+                    i += 1
+
+    def getSrPage(terms, operators):
         error = ''
+        getpages = None
+        if len(terms) > 0:
+            tq1 = Q(pg_cont__icontains=terms[0])
+        if len(terms) > 1:
+            tq2 = Q(pg_cont__icontains=terms[1])
+        if len(terms) > 2:
+            tq3 = Q(pg_cont__icontains=terms[2])
+
+        if len(terms) == 1:
+            getpages = Page.objects.filter(tq1).order_by('text__au_id__date')
+            getResult(getpages)
+        elif len(terms) == 2:
+            if operators:
+                if operators[0] == 'a':
+                    getpages = Page.objects.filter(tq1 & tq2).order_by('text__au_id__date')
+                    getResult(getpages)
+                else:
+                    getpages = Page.objects.filter(tq1 | tq2).order_by('text__au_id__date')
+                    getResult(getpages)
+            else:
+                getpages = None
+                error = "Must select AND/OR"
+
+        elif len(terms) == 3:
+            if operators[0] == 'a' and operators [1] == 'a':
+                getpages = Page.objects.filter(tq1 & tq2 & tq3).order_by('text__au_id__date')
+                getResult(getpages)
+            elif operators[0] == 'a' and operators [1] == 'o':
+                getpages = Page.objects.filter(tq1 & tq2 | tq3).order_by('text__au_id__date')
+                getResult(getpages)
+            elif operators[0] == 'o' and operators [1] == 'a':
+                getpages = Page.objects.filter(tq1 | tq2 & tq3).order_by('text__au_id__date')
+                getResult(getpages)
+            elif operators[0] == 'o' and operators [1] == 'o':
+                getpages = Page.objects.filter(tq1 | tq2 | tq3).order_by('text__au_id__date')
+                getResult(getpages)
+            else:
+                error = 'Unknown Query: Code 001'
+        else:
+            getpages == None
+            error = 'Unknown Query: Code 002'
+
+        if len(getpages) == 0:
+            error = 'No results'
+        return getpages, error
+
+
+
+    def FilterSearch():
+        au_fl = request.GET.getlist('a')
+        txt_fl = request.GET.getlist('t')
+        gen_fl = request.GET.getlist('g')
+        if au_fl and txt_fl is None and gen_fl is None:
+            for auth in au_fl:
+                getpages = getSrPage(sterms, opers).filter(text_id__au_id=auth)
+        elif txt_fl and au_fl is None and gen_fl is None:
+            for text in au_fl:
+                getpages = getSrPage(sterms, opers).filter(text_id=text)
+        elif gen_fl and au_fl is None and txt_fl is None:
+            for genre in au_fl:
+                getpages = getSrPage(sterms, opers).filter(text_id__genre=genre)
+        else:
+            error = "Bad"
+        return getpages
+
+    if sterms:
+        print(getSrPage(sterms, opers))
+        error = getSrPage(sterms, opers)[1]
     else:
-        error = "Only single word search is supported at this time"
-        print(error)
-        
-    #grabs author and texts from search result to be used in the filter           
+        error = "Please enter Search Term"
+        print(getSrPage(sterms, opers))
+
+
+    texts = Text.objects.filter(status=3).order_by('au_id__date')
+    authors = Author.objects.filter(incrp=1).order_by('date')
+    genres = Genre.objects.all()
+    #grabs author and texts from search result to be used in the filter
     filteritems = Text.objects.filter(text_id__in=textidlist).order_by('title_ar')
     filterauth = Author.objects.filter(au_tl__in=authidlist).order_by('au_id')
 
@@ -153,8 +174,12 @@ def search(request):
         'error': error,
         'filteritems': filteritems,
         'filterauth': filterauth,
-        'getsearch': getsearch,
+        'getsearch': sterms,
+        'opers' : opers,
         'main_result_list': main_result_list,
+        'texts' : texts,
+        'authors' : authors,
+        'genres' : genres,
     }
     return render(request, 'search_corpus/search.html', context)
 
