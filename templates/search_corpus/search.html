@@ -4,9 +4,9 @@
 <div class="filter_title" > Search </div>
 <div class="filter_buttons">
   
-  <button class="filter filter_blue" onclick="openFilter(event, 'Texts'); uncheckAll()">By Title</button>
-  <button class=" filter" onclick="openFilter(event, 'Authors'); uncheckAll()">By Author</button>
-  <button class="filter" onclick="openFilter(event, 'Genres'); uncheckAll()">By Genre</button>
+  <button class="filter filter_blue" onclick="openFilter(event, 'Texts'); uncheckAll()">Title</button>
+  <button class=" filter" onclick="openFilter(event, 'Authors'); uncheckAll()">Author</button>
+  <button class="filter" onclick="openFilter(event, 'Genres'); uncheckAll()">Genre</button>
 
 
 </div>
@@ -14,7 +14,7 @@
 <div class="filter_contents">
   <form onsubmit="disableEmptyInputs(this)">
   <div id="Texts" class="fcontent" style="">
-    <input type="text" id="textlist" class="searchlist" onkeyup="filterText()" placeholder="Filter Titles" title="Type in a name">
+    <input type="text" id="textlist" class="searchlist" onkeyup="filterText()" placeholder="Type to Filter Titles" title="Type in a name">
     <ul id="textitems" class="scroll_y searchitems">
       {% for text in texts %}
       <li><label>{{text.title_ar}} - {{text.au_id.sh_ar}} ({{text.au_id.date}}) <input type="checkbox" id="{{ text.text_id }}" name="t" value="{{ text.text_id }}"></label></li>
@@ -23,7 +23,7 @@
   </div>
 
   <div id="Authors" class="fcontent" style="display:none">
-    <input type="text" id="authorlist" class="searchlist" onkeyup="filterAuthor()" placeholder="Filter Authors" title="Type in a name">
+    <input type="text" id="authorlist" class="searchlist" onkeyup="filterAuthor()" placeholder="Type to Filter Authors" title="Type in a name">
     <ul id="authoritems" class="scroll_y searchitems">
       {% for author in authors %}
       <li><label>({{author.date}}) {{ author.au_ar }} <input type="checkbox" id="{{ author.au_id }}" name="a" value="{{ author.au_id }}"></label></li>
@@ -32,7 +32,7 @@
   </div>
 
   <div id="Genres" class="fcontent" style="display:none">
-    <input type="text" id="genrelist" class="searchlist" onkeyup="filterGenre()" placeholder="Filter Genres" title="Type in a name">
+    <input type="text" id="genrelist" class="searchlist" onkeyup="filterGenre()" placeholder="Type to Filter Genres" title="Type in a name">
     <ul id="genreitems" class="scroll_y searchitems">
       {% for genre in genres %}
       <li><label>{{ genre.gen_ar }} <input type="checkbox" id="{{ genre.gen_id }}" name="g" value="{{ genre.gen_id }}"></label></li>
@@ -44,9 +44,9 @@
 <div class="search_form">
     
     <input class="search_term" type="search" name="s" placeholder="Text Contains..." required > <select id= "oper1" name="op" class="select_op"><option disabled="disabled" selected="selected"></option><option value="a">AND</option><option value="o">OR</option></select>
-    <input id="search2" class="search_term" type="search" name="s" placeholder="Text Contains..."  onchange="updateRequirements();" > <select id="oper2" name="op" class="select_op"><option disabled="disabled" selected="selected"></option><option value="a">AND</option><option value="o">OR</option></select>
-    <input id="search3" class="search_term" type="search" name="s" placeholder="Text Contains..."  onchange="updateRequirements2();"><br><br>
-    &emsp;&emsp;<input value="Search" type="submit">
+    <input id="search2" class="search_term" type="search" name="s" placeholder="Text Contains..."  onkeyup="updateRequirements();" > <select id="oper2" name="op" class="select_op"><option disabled="disabled" selected="selected"></option><option value="a">AND</option><option value="o">OR</option></select>
+    <input id="search3" class="search_term" type="search" name="s" placeholder="Text Contains..."  onkeyup="updateRequirements2();"><br><br>
+    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<input value="Search" type="submit">
   </form>
 </div>
 
@@ -89,7 +89,12 @@
       <li><label>{{text.title_ar}} - {{text.au_id.sh_ar}} ({{text.au_id.date}}) <input type="checkbox" id="{{ text.text_id }}" name="t" value="{{ text.text_id }}"></label></li>
       {% endfor %}
       </ul>
-      <input type="hidden" name="s" value="{{getsearch.0}}">
+      {% for search in getsearch %}
+      <input type="hidden" name="s" value="{{search}}">
+      {% endfor %}
+      {% for oper in opers %}
+      <input type="hidden" name="op" value="{{oper}}">
+      {% endfor %}
               <input value="Filter" type="submit">
 
   </div>

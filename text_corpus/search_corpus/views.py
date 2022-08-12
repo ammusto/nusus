@@ -67,10 +67,6 @@ def search(request):
                     pr_end = len(text)-1 if index + prev_len + len(sterms[i]) > len(text
                         )-1  else index + len(sterms[i]) + prev_len
                     startprev = '' if pr_start == 0 else '...'
-
-                    print(index)
-                    print(pr_start)
-                    print(pr_end)
                     while pr_start < index: startprev += text[pr_start]; pr_start += 1
                     while index  < pr_end-len(sterms[i]) : endprev += text[index+len(
                         sterms[i])]; index += 1;
@@ -89,7 +85,6 @@ def search(request):
                     i += 1
 
     def getSrPage(terms, operators):
-        error = ''
         getpages = None
         if len(terms) > 0:
             tq1 = Q(pg_cont__icontains=terms[0])
@@ -100,41 +95,23 @@ def search(request):
 
         if len(terms) == 1:
             getpages = Page.objects.filter(tq1).order_by('text__au_id__date')
-            getResult(getpages)
         elif len(terms) == 2:
-            if operators:
-                if operators[0] == 'a':
-                    getpages = Page.objects.filter(tq1 & tq2).order_by('text__au_id__date')
-                    getResult(getpages)
-                else:
-                    getpages = Page.objects.filter(tq1 | tq2).order_by('text__au_id__date')
-                    getResult(getpages)
+            if operators[0] == 'a':
+                getpages = Page.objects.filter(tq1 & tq2).order_by('text__au_id__date')
             else:
-                getpages = None
-                error = "Must select AND/OR"
+                getpages = Page.objects.filter(tq1 | tq2).order_by('text__au_id__date')
 
         elif len(terms) == 3:
             if operators[0] == 'a' and operators [1] == 'a':
                 getpages = Page.objects.filter(tq1 & tq2 & tq3).order_by('text__au_id__date')
-                getResult(getpages)
             elif operators[0] == 'a' and operators [1] == 'o':
                 getpages = Page.objects.filter(tq1 & tq2 | tq3).order_by('text__au_id__date')
-                getResult(getpages)
             elif operators[0] == 'o' and operators [1] == 'a':
                 getpages = Page.objects.filter(tq1 | tq2 & tq3).order_by('text__au_id__date')
-                getResult(getpages)
             elif operators[0] == 'o' and operators [1] == 'o':
                 getpages = Page.objects.filter(tq1 | tq2 | tq3).order_by('text__au_id__date')
-                getResult(getpages)
-            else:
-                error = 'Unknown Query: Code 001'
-        else:
-            getpages == None
-            error = 'Unknown Query: Code 002'
 
-        if len(getpages) == 0:
-            error = 'No results'
-        return getpages, error
+        return getpages
 
 
 
@@ -142,26 +119,26 @@ def search(request):
         au_fl = request.GET.getlist('a')
         txt_fl = request.GET.getlist('t')
         gen_fl = request.GET.getlist('g')
-        if au_fl and txt_fl is None and gen_fl is None:
+        getpages = ''
+        if au_fl and not txt_fl and not gen_fl:
             for auth in au_fl:
                 getpages = getSrPage(sterms, opers).filter(text_id__au_id=auth)
-        elif txt_fl and au_fl is None and gen_fl is None:
-            for text in au_fl:
+                getResult(getpages)
+        elif txt_fl and not au_fl and not gen_fl:
+            print("OK")
+            for text in txt_fl:
                 getpages = getSrPage(sterms, opers).filter(text_id=text)
-        elif gen_fl and au_fl is None and txt_fl is None:
-            for genre in au_fl:
+                getResult(getpages)
+        elif gen_fl and not au_fl and not txt_fl:
+            for genre in gen_fl:
                 getpages = getSrPage(sterms, opers).filter(text_id__genre=genre)
+                getResult(getpages)
         else:
-            error = "Bad"
+            getResult(getSrPage(sterms, opers))
         return getpages
 
     if sterms:
-        print(getSrPage(sterms, opers))
-        error = getSrPage(sterms, opers)[1]
-    else:
-        error = "Please enter Search Term"
-        print(getSrPage(sterms, opers))
-
+        FilterSearch()
 
     texts = Text.objects.filter(status=3).order_by('au_id__date')
     authors = Author.objects.filter(incrp=1).order_by('date')

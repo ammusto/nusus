@@ -352,7 +352,7 @@ input[type="search"]::-webkit-search-cancel-button {
   text-align: center;
   width: 60%;
   font-size: 14px;
-  border-left: 1px solid;
+
   float: right;
 }
 .filter_auth {
@@ -362,6 +362,7 @@ input[type="search"]::-webkit-search-cancel-button {
   min-height: 200px;
   border-right: 0px;
   font-size: 14px;
+  border-right: 1px solid;
 }
 .filter_sub {
   float: right;
@@ -419,12 +420,12 @@ input[type="search"]::-webkit-search-cancel-button {
 .filter_buttons {
   padding-top: 70px;
 float: right;
-width: 100px;
+width: 12%;
 border-left: 1px solid;
 height: 270px;
 }
 .filter_search.top {
-  height: 300px;
+  min-height: 300px;
   overflow: hidden;
   border-bottom: 1px solid black;
 }
@@ -435,21 +436,22 @@ height: 270px;
 }
 .filter_contents {
   float: right;
-  width: 500px;
+  width: 54%;
   height: 270px;
   border-left: 1px solid;
 }
 .search_form {
   padding-top: 50px;
+  padding-left: 18px;
   float: right;
   text-align: left;
-  width: 300px;
+  width: 34%;
   height: 270px;
 }
 .search_term {
   margin-bottom: 10px;
   text-align: right;
-  width: 220px;
+  width: 60%;
   height: 29px;
 }
 .select_op{
