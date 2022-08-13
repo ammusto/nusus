@@ -115,7 +115,7 @@ def search(request):
 
 
 
-    def FilterSearch():
+    if sterms:
         au_fl = request.GET.getlist('a')
         txt_fl = request.GET.getlist('t')
         gen_fl = request.GET.getlist('g')
@@ -135,10 +135,6 @@ def search(request):
                 getResult(getpages)
         else:
             getResult(getSrPage(sterms, opers))
-        return getpages
-
-    if sterms:
-        FilterSearch()
 
     texts = Text.objects.filter(status=3).order_by('au_id__date')
     authors = Author.objects.filter(incrp=1).order_by('date')

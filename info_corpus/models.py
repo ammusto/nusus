@@ -6,7 +6,7 @@ from django.utils import timezone
 class CorpusUp(models.Model):
     post_id = models.IntegerField(primary_key=True)
     vers = models.CharField(max_length=25)
-    date = models.DateTimeField(default=timezone.now)
+    date = models.CharField(max_length=25)
     post = models.TextField()
     added_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
