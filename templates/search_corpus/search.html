@@ -59,22 +59,20 @@
   <div class="filter_title" onclick="toggleFilter()"> Filter Results &#8597;</div>
   <div id="filter_container">
   <div class="filter_auth">
-
-
     <form name="filter">
 
       <input type="text" id="authres" class="searchlist" onkeyup="filAuthRes()" placeholder="Type to Filter Authors" title="Type in a name">
       <ul id="authresitems" class="filteritems scroll_y">
-      {% for item in filterauth %}
-      <li><label>({{item.date}}) {{ item.au_ar }} <input type="checkbox" id="{{ item.au_id }}" name="a" value="{{ item.au_id }}"></label></li>
-      {% endfor %}
+        {% for item in filterauth %}
+        <li><label>({{item.date}}) {{ item.au_ar }} <input type="checkbox" id="{{ item.au_id }}" name="a" value="{{ item.au_id }}"></label></li>
+        {% endfor %}
       </ul>
 
-      {% for search in getsearch %}
-      <input type="hidden" name="s" value="{{search}}">
+      {% for search in terms %}
+        <input type="hidden" name="s" value="{{search}}">
       {% endfor %}
       {% for oper in opers %}
-      <input type="hidden" name="op" value="{{oper}}">
+        <input type="hidden" name="op" value="{{oper}}">
       {% endfor %}
       <div class="filterbtn_div">
         <input value="Filter" type="submit">
@@ -89,17 +87,16 @@
       <li><label>{{text.title_ar}} - {{text.au_id.sh_ar}} ({{text.au_id.date}}) <input type="checkbox" id="{{ text.text_id }}" name="t" value="{{ text.text_id }}"></label></li>
       {% endfor %}
       </ul>
-      {% for search in getsearch %}
+      {% for search in terms %}
       <input type="hidden" name="s" value="{{search}}">
       {% endfor %}
       {% for oper in opers %}
       <input type="hidden" name="op" value="{{oper}}">
       {% endfor %}
               <input value="Filter" type="submit">
-
+    </form>
   </div>
 </div>
-</form>
 </div>
 <table class="search_results">
   <tbody>
@@ -110,7 +107,7 @@
     </tr> 
     {% for text in main_result_list %} <tr>
       <td class="td_sr">
-        <a href="../results/{{text.Textid}}/{{text.PgID}}/?t={{getsearch.0}}" target="_blank" rel="noopener noreferrer">{{ text.Page }}</a>
+        <a href="../results/{{text.Textid}}/{{text.PgID}}/?{% for term in terms %}&s={{term}}{% endfor %}" target="_blank" rel="noopener noreferrer">{{ text.Page }}</a>
       </td>
       <td class="td_sr">{{ text.Term.0|safe }}</td>
       <td class="td_sr">

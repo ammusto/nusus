@@ -11,7 +11,6 @@ urlpatterns = [
     path('about/', info_corpus.views.about, name='about'),
     path('corpus/', info_corpus.views.corpus, name='corpus'),
 
-
     path('results/<int:text_id>/<int:pgid>/', text_corpus.search_corpus.views.results, name='results'),
     path('search/', text_corpus.search_corpus.views.search, name='search'),
 
