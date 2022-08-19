@@ -1,3 +1,10 @@
+@font-face {
+  font-family: "Naskh";
+  src: url("/static/fonts/UthmanTN1.otf"); /* IE 9 */
+  src: url("/static/fonts/UthmanTN1.otf?") format("eot"), /* IE 6-8 */
+  url("/static/fonts/UthmanTN1.otf") format("opentype"), /* Other browsers */
+  url("/static/fonts/UthmanTN1.otf") format("truetype"); /* Safari, Android, iOS */
+}
 .page-header {
   margin-top: 0;
   margin-bottom: 40px;
@@ -180,15 +187,34 @@ table.crptable tr:nth-child(even) {
   margin: auto;
   padding-bottom: 10px
 }
+.read_display h3 {
+  font-size: 26px !important;
+  font-weight: 600;
+}
+.read_display h4 {
+  font-size: 40px;
+  font-weight: bold;
+}
+.pgnumb {
+  font-family: var(--bs-body-font-family);
+  font-size: 16px;
+}
+.read_display p {
+  text-indent: 30px;
+  line-height: 1.4em;
+  margin-bottom: 5px;
+}
 .read_display {
-  width: 600px;
+  font-family: Naskh;
+  width: 700px;
   margin: auto;
   border: 1px solid;
-  padding: 25px;
+  padding: 50px;
   margin-top: 25px;
-  height: 700px;
-  font-size: 16px;
-  position: relative
+  min-height: 700px;
+  font-size: 22px;
+  position: relative;
+  max-height: 900px;
 }
 .pgnumb{
   text-align: center;
@@ -522,7 +548,4 @@ input {
 }
 .changelog{
   vertical-align: top
-}
-.read_display p{
-  margin-bottom: 5px
 }

@@ -65,7 +65,7 @@ def browse(request):
     tentry = ''
     if br_sr is None or br_sr == '':
         order = textOrder()
-        tentry = crpPage(Text.objects.order_by(textOrder()))
+        tentry = crpPage(Text.objects.filter(status=3).order_by(textOrder()))
     #no filter
     elif br_sr != '' and br_fl == '0':
         PP = Q(title_ar__icontains=br_sr) 
@@ -76,28 +76,28 @@ def browse(request):
             Q(au_id__au_ar__icontains=br_sr) |
             Q(genre_id__gen_en__icontains=br_sr) |
             Q(genre_id__gen_ar__icontains=br_sr)
-            ).order_by(textOrder()))
+            ).filter(status=3).order_by(textOrder()))
         link = getLink()
     #title filter
     elif br_sr != '' and br_fl == '1':
         tentry = crpPage(Text.objects.filter(
             Q(title_tl__icontains=br_sr) |
             Q(title_ar__icontains=br_sr)
-            ).order_by(textOrder()))
+            ).filter(status=3).order_by(textOrder()))
         link = getLink()
-    #authoer filter
+    #author filter
     elif br_sr != '' and br_fl == '2':
         tentry = crpPage(Text.objects.filter(
             Q(au_id__au_tl__icontains=br_sr) |
             Q(au_id__au_ar__icontains=br_sr)
-            ).order_by(textOrder()))
+            ).filter(status=3).order_by(textOrder()))
         link = getLink()
     #genre filter
     elif br_sr != '' and br_fl == '3':
         tentry = crpPage(Text.objects.filter(
             Q(style__icontains=br_sr) |
             Q(genre__icontains=br_sr)
-            ).order_by(textOrder()))
+            ).filter(status=3).order_by(textOrder()))
         link = getLink()
 
     context = {

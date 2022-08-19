@@ -184,10 +184,9 @@ def results(request, text_id, pgid):
     prange = list(read_paginator.get_elided_page_range(page_num, on_each_side=2, on_ends=1))
 
     #get the page text and replace terms
-    text = striphtml(Page.objects.get(pg_id=pgid).pg_cont)
+    text = Page.objects.get(pg_id=pgid).pg_cont
     for sterm in sterms:
-        print(sterm)
-        text = text.replace(sterm, "<span style=\"color:red;font-weight:bold\">" + sterm + "</span>")
+        text = text.replace(sterm, "<span style=\"color:red;font-weight:bold\">" + striphtml(sterm) + "</span>")
 
     highlighted = text
 
