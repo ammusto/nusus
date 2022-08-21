@@ -529,11 +529,11 @@ input {
 }
 .fixed_left{
   float: left;
-  width: 50%
+  width: 40%
 }
 .fixed_right{
   float: right;
-  width: 50%
+  width: 60%
 }
 .corp_stats{
   color: #3078b0;

@@ -21,14 +21,12 @@
         </td>
       </tr>
       <tr>
-        <td class="au_left">Texts in corpus:</td>
-      </tr> {% for text in au_texts %} 
+        <td colspan="2"> &nbsp;
+      </tr>
       <tr class='tr_au'>
-        <td></td>
-        <td>
-          <a href='../../text/{{text.text_id}}'>{{ text }}</a>
-        </td>
-      </tr> {% endfor %}
+        <td class="au_left">Texts in corpus:</td>
+        <td>{% for text in au_texts %}  {% if text.status == 3 %} <a href='../../text/{{text.text_id}}'>{{ text }}</a><br> {% endif %}{% endfor %}</td>
+      </tr> 
     </tbody>
   </table>
 </div> {% endblock %}

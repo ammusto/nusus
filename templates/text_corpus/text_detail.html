@@ -71,9 +71,17 @@
       </tr> 
       {% endfor %} 
       {% if text.status == 3 %} <tr>
-        <td class="au_left">Read in Corpus:</td>
+        <td class="au_left">Availability:</td>
         <td>
-          <a href='../../read/{{ text.text_id }}' target="_blank">Open Reader</a>
+          <a href='../../read/{{ text.text_id }}' target="_blank">Read in Corpus</a>
+        </td>
+        </td>
+      </tr>
+      {% elif text.status == 1 %} 
+      <tr>
+        <td class="au_left">Availability:</td>
+        <td>
+          Text Unavailable
         </td>
         </td>
       </tr> 

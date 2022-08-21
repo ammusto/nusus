@@ -25,6 +25,9 @@ def search(request):
     #grab all the unique author ids for search results. used in filter
     authidlist = []
     textidlist = []
+
+    #error message
+    error = ''
     def getSrFilter(result_list):
         """ get list of unique author and text ids for search result filter """
         i = 0
@@ -149,7 +152,10 @@ def search(request):
         else:
             getResult(getSrPage(sterms, opers))
         #get author and text list for search result filters
-        getSrFilter(main_result_list)
+        if main_result_list:
+            getSrFilter(main_result_list)
+        else:
+            error = "No Results Found"
 
     #get corpus texts, authors, and genres for main search filter
     texts = Text.objects.filter(status=3).order_by('au_id__date')
@@ -161,6 +167,7 @@ def search(request):
     filterauth = authors.filter(au_tl__in=authidlist).order_by('au_id')
 
     context = {
+        'error' : error,
         'filteritems': filteritems,
         'filterauth': filterauth,
         'terms': sterms,

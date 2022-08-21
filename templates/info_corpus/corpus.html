@@ -1,11 +1,11 @@
 {% extends 'base.html' %} {% block content %} 
 <div class="fixedtext">
   <h2>Corpus Details</h2>
-  <p>The current corpus is somewhat limited, but are continuing to perform optical character recognition (OCR) to digitize and add new texts. The initial corpus consisted of 27 Sufi and Sufi-adjacent texts across five different authors, but nuṣūṣ has been expanded to include <em>falsafa</em> and <em>kalām</em> works as well.</p>
-  <p>Each digitized text is based on a published edition so page numbers can be cross-referenced. In addition, and perhaps more importantly, we are encoding these texts according to the <a href="https://alraqmiyyat.github.io/OpenITI/">Open Islamicate Text Initiative's</a> (OpenITI) <a href="https://alraqmiyyat.github.io/mARkdown/">mARkdown schema</a>. Encoding these texts renders them "machine-actionable" or, in other words, allows scholars to perform a variety of textual analyses. Once encoded, links to the files can be found while browsing the corpus. </p>
-  <p>The initial corpus was OCR'd using ABBYY FineReader, but moving forward this project will use <a href="https://www.escriptorium.uk/">eScriptorium,</a> a digital palaeography framework, which uses the <a href="https://kraken.re/master/index.html">kraken</a> OCR engine. For our project we use a kraken OCR model developped by the <a href="https://openiti.org/">OpenITI team</a>.
-  <p>Although the goal of nuṣūṣ is to digitize and make available new texts, for the sake of completeness we have also included some already digitized texts. Source for these already digitized are noted.  
-  <div class="fixed_right">
+  <p>We initially envisoned Nuṣūṣ as a database for early Sufi texts not included in other digitized corpora, but the project has since expanded to include <em>falsafa</em> and <em>kalām</em> works.</p>
+  <p>To digitize these texts, we use <a href="https://www.escriptorium.uk/">eScriptorium,</a> a digital palaeography framework, which uses the <a href="https://kraken.re/master/index.html">kraken</a> OCR engine. For our project we use a kraken OCR model developped by the <a href="https://openiti.org/">OpenITI team</a>.</p>
+  <p>Although the goal of Nuṣūṣ is to digitize and make available new texts, we have decided to include some works that have already been digitized and are extant in other corpora. Our reasoning for this to consolidate Sufi, <em>falsafa</em>, and <em>kalām</em> texts in one corpus and to increase the utility of our database and its search functionality. Texts imported from other corpora are marked as such in Nuṣūṣ.</p>
+  <p>We have an internal list of new texts, but if you have any suggestions or recommendations for texts to be included, please <a href="mailto:nususcorpus@gmail.com"> contact us</a>.
+  <div class="fixed_left">
   <h2>Corpus Stats</h2>
   <table style="margin-left: 25px; line-height: 22px">
     <tbody>
@@ -28,8 +28,8 @@
     </tbody>
   </table>
   </div>
-  <div class="fixed_left">
+  <div class="fixed_right">
   <h2>Future Development Goals</h2>
-  <p>Citation manager functionality <br> New text pipeline <br> Text solicit form
+  <p>Citation manager functionality <br> New text pipeline <br> Text solicit form <br> More complex search functionality <br> Incorporate Text Analysis Tools
   </div>
 </div> {% endblock %}
