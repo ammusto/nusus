@@ -133,7 +133,6 @@ def read(request, text_id):
     text_info = get_object_or_404(Text, text_id=text_id)
     page_list = list(Page.objects.filter(text_id=text_id))
     read_paginator = Paginator(page_list, 1)
-    print(Page.objects.filter(text_id=text_id))
 
     #get page content
     if request.GET.get('page') is not None and int(request.GET.get('page')) <= len(page_list):

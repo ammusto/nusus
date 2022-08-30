@@ -204,15 +204,18 @@ table.crptable tr:nth-child(even) {
   line-height: 1.4em;
   margin-bottom: 5px;
 }
+
+.read_display h5, h4, h3 {
+    font-family: Naskh;
+}
 .read_display {
-  font-family: Naskh;
   width: 700px;
   margin: auto;
   border: 1px solid;
   padding: 50px;
   margin-top: 25px;
   min-height: 700px;
-  font-size: 22px;
+  font-size: 17px;
   position: relative;
   max-height: 900px;
 }
