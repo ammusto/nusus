@@ -208,6 +208,10 @@ table.crptable tr:nth-child(even) {
 .read_display h5, h4, h3 {
     font-family: Naskh;
 }
+
+.read_display h5 {
+  font-size: 20px;
+}
 .read_display {
   width: 700px;
   margin: auto;
