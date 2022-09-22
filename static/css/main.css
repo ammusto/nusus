@@ -32,7 +32,7 @@ a {
   text-decoration: none;
   color: #3078b0
 }
-a: hover {
+a:hover {
   color: #b06830 !important
 }
 h2.h2ar {
@@ -192,8 +192,11 @@ table.crptable tr:nth-child(even) {
   font-weight: 600;
 }
 .read_display h4 {
-  font-size: 40px;
+  font-size: 30px;
   font-weight: bold;
+}
+.read_display h4 a:hover {
+  color: #b06830;
 }
 .pgnumb {
   font-family: var(--bs-body-font-family);
@@ -349,7 +352,7 @@ table.search_results tr:nth-child(even) {
   margin-left: 25px
 }
 .au_left {
-  width: 17%;
+  width: 18%;
   font-weight: 500;
   text-align: right
 }

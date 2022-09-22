@@ -9,27 +9,18 @@
       </tr>
       <tr class='tr_au'>
         <td colspan="2">
-          <h4>&emsp;&emsp;{{ text.title_ar }}</h4>
+          <h3 style="font-size:34px">&emsp; {{ text.title_ar }}</h4>
         </td>
       </tr>
       <tr class='tr_au'>
-        <td class="au_left">author: </td>
+        <td class="au_left">Author: </td>
         <td>
           <a href="{% url 'au_detail' pk=text.au_id.pk %}">{{ text.au_id }}</a> (d. {{ text.au_id.date}})
         </td>
       </tr>
       <tr class='tr_au'>
         <td></td>
-        <td>{{ text.au_id.au_ar }}</td>
-      </tr>
-      <tr class='tr_au'>
-        <td class="au_left">Base Edition: </td> 
-        {% if text.perm == '0' %} 
-          <td>{{ text.permbib|safe }}</td> 
-        {% else %} <td>
-          <a href="{{ text.perm }}" target="_blank" rel="noopener noreferrer">{{ text.permbib|safe }}, p {{ text.pg_rng }}</a>
-        </td> 
-        {% endif %}
+        <td style="font-family: Naskh; font-size:24px">{{ text.au_id.au_ar }}</td>
       </tr>
       <tr class='tr_au'>
         <td class="au_left">Genre: </td>
@@ -47,44 +38,41 @@
           <br>{{ text.word_len}} words
         </td>
       </tr>
-      <tr class='tr_au'>
-        <td class="au_left">Source: </td>
-        <td>{{ text.source}}
-        </td>
+       <tr class='tr_au'>
+        <td class="au_left">Base Edition: </td> 
+        {% if text.perm == '0' %} 
+          <td>{{ text.permbib|safe }}</td> 
+        {% else %} <td>
+          <a href="{{ text.perm }}" target="_blank" rel="noopener noreferrer">{{ text.permbib|safe }}, p {{ text.pg_rng }}</a>
+        </td> 
+        {% endif %}
       </tr>
       <tr>
         <td class="au_left">PDF:</td> 
         {% if text.pdf == '0' %} 
           <td>N/A</td> 
         {% else %} <td>
-          <a href="{{ text.pdf }}" target="_blank" rel="noopener noreferrer">Here</a>
+          <a href="{{ text.pdf }}" target="_blank" rel="noopener noreferrer">Available</a>
         </td> 
         {% endif %}
       </tr> 
-      {% for text in au_texts %} 
-        <tr class='tr_au'>
-        <td class="au_left"></td>
-        <td>
-          <a href='../../text/{{text.text_id}}'>{{ text }}</a>
-          </h2>
+      <tr class='tr_au'>
+        <td class="au_left">Corpus Source: </td>
+        <td>{{ text.source}}
         </td>
-      </tr> 
-      {% endfor %} 
-      {% if text.status == 3 %} <tr>
-        <td class="au_left">Availability:</td>
+      </tr>
+      <tr>
+        <td class="au_left">Corpus Availability:</td>
         <td>
-          <a href='../../read/{{ text.text_id }}' target="_blank">Read in Corpus</a>
+          <a href='../../read/{{ text.text_id }}' target="_blank">Read in Corpus</a> and <a href='/search'>Search</a>
         </td>
         </td>
       </tr>
-      {% elif text.status == 1 %} 
-      <tr>
-        <td class="au_left">Availability:</td>
-        <td>
-          Text Unavailable
-        </td>
-        </td>
-      </tr> 
+      {% if text.source == 'OCR' %}
+      <tr class='tr_au'>
+        <td class='au_left'>Corpus Contributor:</td>
+        <td> {{ text.contrib }} </td>
+      </tr>
       {% endif %}
     </tbody>
   </table>

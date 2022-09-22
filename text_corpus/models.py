@@ -19,6 +19,7 @@ class Text(models.Model):
     word_len = models.IntegerField()
     source = models.TextField()
     status = models.IntegerField()
+    contrib = models.CharField(max_length=125)
 
     def publish(self):
         self.save()
