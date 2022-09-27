@@ -5,6 +5,7 @@ from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 from django.shortcuts import render
 from .models import CorpusUp
+from .models import TeamMem
 from django.db.models import Q
 from text_corpus.models import Page, Text, Author
 import requests
@@ -23,7 +24,15 @@ def home(request):
     return render(request, 'info_corpus/home.html', context)
 
 def about(request):
-    return render(request, 'info_corpus/about.html')
+    #get team members
+    team = TeamMem.objects.all()
+    print(team)
+
+    context = {
+        'team': team,
+    }
+
+    return render(request, 'info_corpus/about.html', context)
 
 def page_not_found_view(request, exception):
     return render(request, '404.html', status=404)

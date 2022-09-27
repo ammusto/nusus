@@ -208,7 +208,7 @@ table.crptable tr:nth-child(even) {
   margin-bottom: 5px;
 }
 
-.read_display h5, h4, h3 {
+.read_display h5, .read_display h4, .read_display h3 {
     font-family: Naskh;
 }
 
@@ -235,7 +235,7 @@ table.crptable tr:nth-child(even) {
   left: 0;
   width: 100%
 }
-h5{
+.read_display h5{
   text-align: center !important
 }
 a.rnav {
@@ -558,4 +558,15 @@ input {
 }
 .changelog{
   vertical-align: top
+}
+.team {
+  margin-left: 25px;
+}
+.team_mem {
+  width: 33%;
+  float: left;
+  padding-right: 2%;
+}
+.mem_photo {
+  width:  266px;
 }

@@ -2,6 +2,8 @@ from django.urls import path
 import info_corpus.views, text_corpus.views, text_corpus.search_corpus.views
 from django.views.generic.base import RedirectView
 from django.contrib.staticfiles.storage import staticfiles_storage
+from django.conf.urls.static import static
+from django.conf import settings
 from django.contrib import admin
 
 urlpatterns = [
@@ -10,7 +12,6 @@ urlpatterns = [
     path('', info_corpus.views.home, name='home'),
     path('about/', info_corpus.views.about, name='about'),
     path('corpus/', info_corpus.views.corpus, name='corpus'),
-
     path('results/<int:text_id>/<int:pgid>/', text_corpus.search_corpus.views.results, name='results'),
     path('search/', text_corpus.search_corpus.views.search, name='search'),
 
@@ -20,4 +21,5 @@ urlpatterns = [
     path('read/<int:text_id>/', text_corpus.views.read, name='content'),
 
 ]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 handler404 = "info_corpus.views.page_not_found_view"
