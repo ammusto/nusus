@@ -559,14 +559,16 @@ input {
 .changelog{
   vertical-align: top
 }
-.team {
-  margin-left: 25px;
-}
 .team_mem {
   width: 33%;
   float: left;
-  padding-right: 2%;
+  padding-left: 25px;
 }
 .mem_photo {
-  width:  266px;
+  width:  100%;
+  margin-bottom: 10px;
+
+}
+.team_mem p {
+  margin-left: 0px;
 }
