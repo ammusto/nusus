@@ -46,7 +46,7 @@
         {% if text.perm == '0' %} 
           <td>{{ text.permbib|safe }}</td> 
         {% else %} <td>
-          <a href="{{ text.perm }}" target="_blank" rel="noopener noreferrer">{{ text.permbib|safe }}, p {{ text.pg_rng }}</a>
+          <a href="{{ text.perm }}" target="_blank" rel="noopener noreferrer">{{ text.permbib|safe }}, page(s) {{ text.pg_rng }}.</a>
         </td> 
         {% endif %}
       </tr>
