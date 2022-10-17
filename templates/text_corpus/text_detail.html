@@ -1,4 +1,7 @@
-{% extends 'base.html' %} {% block content %} 
+{% extends 'base.html' %}
+{% block meta %}
+  {{ text.meta|safe }}
+{% endblock meta %} {% block content %} 
 <div>
   <table border="0" cellpadding="0" cellspacing="5" class='tcard'>
     <tbody>

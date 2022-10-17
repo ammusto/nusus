@@ -20,6 +20,7 @@ class Text(models.Model):
     source = models.TextField()
     status = models.IntegerField()
     contrib = models.CharField(max_length=125)
+    meta = models.TextField()
 
     def publish(self):
         self.save()
