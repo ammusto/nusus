@@ -15,6 +15,6 @@
         <td width="25%" class="changelog">{{content.date.date}} </td>
       </tr>
       <tr></tr> {% endfor %} </tbody>
-    </table> {% endif %} <div class="controls crpup"> {% if update.has_previous %} <a class='rnav' href="?page={{ update.previous_page_number }}">&ensp;< </a> {% else %} {% endif %} {% if update.has_previous and update.has_next %} &emsp; Page {{ update.number }} of {{ count }} &emsp; {% endif %} {%if update.has_next %} <a class='rnav' href="?page={{ update.next_page_number }}">>&ensp;</a> {% endif %} </div>
+    </table> {% endif %} <div class="controls crpup"> {% if update.has_previous %} <a class='rnav' href="?page={{ update.previous_page_number }}">&ensp;< </a> {% else %} {% endif %} {% if update.has_previous or update.has_next %} &emsp; Page {{ update.number }} of {{ count }} &emsp; {% endif %} {%if update.has_next %} <a class='rnav' href="?page={{ update.next_page_number }}">>&ensp;</a> {% endif %} </div>
   </div>
 </div> {% endblock %}
