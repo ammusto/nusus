@@ -119,7 +119,7 @@ function disableEmptyInputs(form) {
 
 function updateRequirements() {
   var search2 = document.querySelector('#search2').value;
-  if (search2 != null) {
+  if (search2 != "") {
     document.querySelector('#oper1').required = true;
   } else {
     document.querySelector('#oper1').required = false;
@@ -128,7 +128,7 @@ function updateRequirements() {
 
 function updateRequirements2() {
   var search3 = document.querySelector('#search3').value;
-  if (search3 != null) {
+  if (search3 != "") {
     document.querySelector('#oper2').required = true;
   } else {
     document.querySelector('#oper2').required = false;

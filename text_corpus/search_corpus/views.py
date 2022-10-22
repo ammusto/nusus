@@ -18,9 +18,20 @@ def striphtml(data):
 
 def search(request):
     """ all functions related to search page """
-    #get search terms and operators
+    #check for search terms and operators
+    osterms = request.GET.getlist('s')
     sterms = request.GET.getlist('s')
     opers = request.GET.getlist('op')
+    exact = request.GET.getlist('e')
+    #check for filters
+    au_fl = request.GET.getlist('a')
+    txt_fl = request.GET.getlist('t')
+    gen_fl = request.GET.getlist('g')
+    i = 0
+    for x in sterms:
+        if exact[i] == '1':
+            sterms[i] = " " + sterms[i] + " "
+        i += 1
 
     #grab all the unique author ids for search results. used in filter
     authidlist = []
@@ -49,6 +60,8 @@ def search(request):
 
     def getSrPage(terms, operators):
         getpages = None
+
+
         if len(terms) > 0:
             tq1 = Q(pg_cont__icontains=terms[0])
         if len(terms) > 1:
@@ -68,9 +81,9 @@ def search(request):
             if operators[0] == 'a' and operators [1] == 'a':
                 getpages = Page.objects.filter(tq1 & tq2 & tq3).order_by('text__au_id__date')
             elif operators[0] == 'a' and operators [1] == 'o':
-                getpages = Page.objects.filter(tq1 & tq2 | tq3).order_by('text__au_id__date')
+                getpages = Page.objects.filter(tq1 & (tq2 | tq3)).order_by('text__au_id__date')
             elif operators[0] == 'o' and operators [1] == 'a':
-                getpages = Page.objects.filter(tq1 | tq2 & tq3).order_by('text__au_id__date')
+                getpages = Page.objects.filter((tq1 | tq2) & tq3).order_by('text__au_id__date')
             elif operators[0] == 'o' and operators [1] == 'o':
                 getpages = Page.objects.filter(tq1 | tq2 | tq3).order_by('text__au_id__date')
 
@@ -98,7 +111,6 @@ def search(request):
                     #set preview end index to end of text if result index is less than prev_len away from end of text
                     pr_end = len(text) if index + prev_len + len(sterms[i]) > len(text
                         )-1  else index + len(sterms[i]) + prev_len
-                    print(str(pr_end) + "of " + str(len(text)))
                     endprev = ''
 
                     #build the preview text
@@ -128,10 +140,6 @@ def search(request):
 
     #run search if search terms are used
     if sterms:
-        #check for filters
-        au_fl = request.GET.getlist('a')
-        txt_fl = request.GET.getlist('t')
-        gen_fl = request.GET.getlist('g')
         #use author filter
         if au_fl and not txt_fl and not gen_fl:
             for auth in au_fl:
@@ -157,6 +165,7 @@ def search(request):
         else:
             error = "No Results Found"
 
+
     #get corpus texts, authors, and genres for main search filter
     texts = Text.objects.filter(status=3).order_by('au_id__date')
     authors = Author.objects.filter(incrp=1).order_by('date')
@@ -176,11 +185,17 @@ def search(request):
         'texts' : texts,
         'authors' : authors,
         'genres' : genres,
+        'exact' : exact,
+        'oterm' : osterms,
+        'txtfl' : txt_fl,
+        'aufl' : au_fl,
+        'genfl' : gen_fl,
     }
     return render(request, 'search_corpus/search.html', context)
 
 def results(request, text_id, pgid):
     sterms = request.GET.getlist('s')
+    exact = request.GET.getlist('e')
 
     #get info for Paginator controls
     page_list = list(Page.objects.filter(text_id=text_id))

@@ -17,7 +17,7 @@
     <input type="text" id="textlist" class="searchlist" onkeyup="filterText()" placeholder="Type to Filter Titles" autofocus>
     <ul id="textitems" class="scroll_y searchitems">
       {% for text in texts %}
-      <li><label>{{text.title_ar}} - {{text.au_id.sh_ar}} ({{text.au_id.date}}) <input type="checkbox" id="{{ text.text_id }}" name="t" value="{{ text.text_id }}"></label></li>
+      <li><label>{{text.title_ar}} - {{text.au_id.sh_ar}} ({{text.au_id.date}}) <input type="checkbox" id="{{ text.text_id }}" name="t" value="{{ text.text_id }}" {% if text.text_id|slugify in txtfl %} checked {% endif %}></label></li>
       {% endfor %}
     </ul>
   </div>
@@ -26,7 +26,7 @@
     <input type="text" id="authorlist" class="searchlist" onkeyup="filterAuthor()" placeholder="Type to Filter Authors">
     <ul id="authoritems" class="scroll_y searchitems">
       {% for author in authors %}
-      <li><label>({{author.date}}) {{ author.au_ar }} <input type="checkbox" id="{{ author.au_id }}" name="a" value="{{ author.au_id }}"></label></li>
+      <li><label>({{author.date}}) {{ author.au_ar }} <input type="checkbox" id="{{ author.au_id }}" name="a" value="{{ author.au_id }}" {% if author.au_id|slugify in aufl %} checked {% endif %}></label></li>
       {% endfor %}
     </ul>
   </div>
@@ -35,7 +35,7 @@
     <input type="text" id="genrelist" class="searchlist" onkeyup="filterGenre()" placeholder="Type to Filter Genres">
     <ul id="genreitems" class="scroll_y searchitems">
       {% for genre in genres %}
-      <li><label>{{ genre.gen_ar }} <input type="checkbox" id="{{ genre.gen_id }}" name="g" value="{{ genre.gen_id }}"></label></li>
+      <li><label>{{ genre.gen_ar }} <input type="checkbox" id="{{ genre.gen_id }}" name="g" value="{{ genre.gen_id }}" {% if genre.gen_id|slugify in genfl %} checked {% endif %}></label></li>
       {% endfor %}
     </ul>
   </div>
@@ -43,13 +43,21 @@
 </div>
 <div class="search_form">
     
-    <input class="search_term" type="search" name="s" placeholder="Text Contains..." required > <select id= "oper1" name="op" class="select_op"><option disabled="disabled" selected="selected"></option><option value="a">AND</option><option value="o">OR</option></select>
-    <input id="search2" class="search_term" type="search" name="s" placeholder="Text Contains..."  onkeyup="updateRequirements();" > <select id="oper2" name="op" class="select_op"><option disabled="disabled" selected="selected"></option><option value="a">AND</option><option value="o">OR</option></select>
-    <input id="search3" class="search_term" type="search" name="s" placeholder="Text Contains..."  onkeyup="updateRequirements2();"><br><br>
+    <span style="vertical-align:text-bottom;">e:</span> <input type="hidden" name="e" {% if exact.0 == "1" %} value="1" {% else %} value="0" {% endif %}><input type="checkbox" onclick="this.previousElementSibling.value=1-this.previousSibling.value" {% if exact.0 == "1" %} checked {% endif %}> <input class="search_term" type="search" name="s" placeholder="Text Contains..." {% if terms.0 %} value="{{oterm.0}}" {% endif %} required > 
+
+    <select id= "oper1" name="op" class="select_op"><option disabled="disabled" selected="selected"></option><option value="a" {% if opers.0 == "a" and terms.1%} selected {% endif %}>AND</option><option value="o"{% if opers.0 == "o" and terms.1%} selected {% endif %}>OR</option></select>
+    <br>
+    <span style="vertical-align:text-bottom;">e:</span> <input type="hidden" name="e" {% if exact.1 == "1" and terms.1 %} value="1" {% else %} value="0" {% endif %} ><input type="checkbox" onclick="this.previousElementSibling.value=1-this.previousSibling.value" {% if exact.1 == "1" and terms.1 %} checked {% endif %}> <input id="search2" class="search_term" type="search" name="s" placeholder="Text Contains..."  {% if terms.1 %} value="{{oterm.1}}" {% endif %}onkeyup="updateRequirements();" > 
+
+    <select id="oper2" name="op" class="select_op"><option disabled="disabled" selected="selected"></option><option value="a" {% if opers.1 == "a" and terms.2%} selected {% endif %}>AND</option><option value="o" {% if opers.1 == "o" and terms.2%} selected {% endif %}>OR</option></select>
+    <br>
+    <span style="vertical-align:text-bottom;">e:</span> <input type="hidden" name="e" {% if exact.2 == "1" and terms.2 %} value="1" {% else %} value="0" {% endif %} ><input type="checkbox" onclick="this.previousElementSibling.value=1-this.previousSibling.value" {% if exact.2 == "1" and terms.2 %} checked {% endif %}> <input id="search3" class="search_term" type="search" name="s" placeholder="Text Contains..."  {% if terms.2 %} value="{{oterm.2}}" {% endif %}onkeyup="updateRequirements2();"><br>
     &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<input value="Search" type="submit">
   </form>
+  <br>
+  <br>
+<span style="margin-left: 55px;font-size:12px">Check "e" for an exact match.</span>
 </div>
-
 
 </div> 
 
@@ -68,11 +76,14 @@
         {% endfor %}
       </ul>
 
-      {% for search in terms %}
+      {% for search in oterm %}
         <input type="hidden" name="s" value="{{search}}">
       {% endfor %}
       {% for oper in opers %}
         <input type="hidden" name="op" value="{{oper}}">
+      {% endfor %}
+            {% for item in exact %}
+      <input type="hidden" name="e" value="{{item}}">
       {% endfor %}
       <div class="filterbtn_div">
         <input value="Filter" type="submit">
@@ -87,12 +98,16 @@
       <li><label>{{text.title_ar}} - {{text.au_id.sh_ar}} ({{text.au_id.date}}) <input type="checkbox" id="{{ text.text_id }}" name="t" value="{{ text.text_id }}"></label></li>
       {% endfor %}
       </ul>
-      {% for search in terms %}
+      {% for item in exact %}
+      <input type="hidden" name="e" value="{{item}}">
+      {% endfor %}
+      {% for search in oterm %}
       <input type="hidden" name="s" value="{{search}}">
       {% endfor %}
       {% for oper in opers %}
       <input type="hidden" name="op" value="{{oper}}">
       {% endfor %}
+
               <input value="Filter" type="submit">
     </form>
   </div>
@@ -107,7 +122,7 @@
     </tr> 
     {% for text in main_result_list %} <tr>
       <td class="td_sr">
-        <a href="../results/{{text.Textid}}/{{text.PgID}}/?{% for term in terms %}&s={{term}}{% endfor %}" target="_blank" rel="noopener noreferrer">{{ text.Page }}</a>
+        <a href="../results/{{text.Textid}}/{{text.PgID}}/?{% for term in terms %}&s={{term}}{% endfor %}&" target="_blank" rel="noopener noreferrer">{{ text.Page }}</a>
       </td>
       <td class="td_sr">{{ text.Term.0|safe }}</td>
       <td class="td_sr">
