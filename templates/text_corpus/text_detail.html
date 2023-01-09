@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block meta %}
-  <meta name="twitter:title" content="The {{ text.title_tl }} ({{ text.title_ar }}) by {{ text.au_id }}">
-  <meta name="twitter:description" content="Read and search through {{ text.title_tl }} ({{ text.title_ar }}) by {{ text.au_id }} (d. {{ text.au_id.date}}) and other texts online through the nuṣūṣ webapp. You can also browse text metadata and learn more about the authors.">
+  <meta name="twitter:title" content="The {{ text.title_tl }} ({{ text.title_ar }}) by {{ text.au_id.au_sh }}">
+  <meta name="twitter:description" content="Read and search through {{ text.title_tl }} ({{ text.title_ar }}) by {{ text.au_id.au_sh }} (d. {{ text.au_id.date}}) and other texts online through the nuṣūṣ webapp. You can also browse text metadata and learn more about the authors.">
   {{ text.meta|safe }}
 {% endblock meta %} {% block content %} 
 <div>
