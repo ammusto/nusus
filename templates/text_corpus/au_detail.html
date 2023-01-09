@@ -1,4 +1,9 @@
-{% extends 'base.html' %} {% block content %} 
+{% extends 'base.html' %}
+{% block meta %}
+  <meta name="twitter:title" content="{{ author.au_tl }} in the Nuṣūṣ Corpus">
+  <meta name="twitter:description" content="Read and search through a variety of digitized Arabic texts written by {{ author.au_tl }} that are not found in other digital corpora. You can also browse text metadata and learn more about the authors.">
+{% endblock meta %}
+ {% block content %} 
 <div>
   <table border="0" cellpadding="0" cellspacing="5" class='tcard'>
     <tbody>

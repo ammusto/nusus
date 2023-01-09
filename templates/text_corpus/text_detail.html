@@ -1,11 +1,7 @@
 {% extends 'base.html' %}
 {% block meta %}
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@deepcutiqtibas">
-<meta name="twitter:creator" content="@deepcutiqtibas">
-<meta name="twitter:title" content="{{ text.title_tl }} ({{ text.title_ar }})">
-<meta name="twitter:description" content="Read and search through {{ text.title_tl }} ({{ text.title_ar }}) and other texts online through the nuṣūṣ webapp. You can also browse text metadata and learn more about the authors.">
-<meta name="twitter:image" content="https://www.nusus.net/static/img/nusus_twitter.png">
+  <meta name="twitter:title" content="The {{ text.title_tl }} ({{ text.title_ar }}) by {{ text.au_id }}">
+  <meta name="twitter:description" content="Read and search through {{ text.title_tl }} ({{ text.title_ar }}) by {{ text.au_id }} (d. {{ text.au_id.date}}) and other texts online through the nuṣūṣ webapp. You can also browse text metadata and learn more about the authors.">
   {{ text.meta|safe }}
 {% endblock meta %} {% block content %} 
 <div>

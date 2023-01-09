@@ -1,5 +1,10 @@
-
-{% extends 'base.html' %}{% load page_url %} {% block content %} 
+{% extends 'base.html' %}
+{% load page_url %}
+{% block meta %}
+  <meta name="twitter:title" content="Browse the Nuṣūṣ Corpus">
+  <meta name="twitter:description" content="Read and search through a variety of digitized Arabic texts that are not found in other digital corpora. You can also browse text metadata and learn more about the authors.">
+{% endblock meta %}
+{% block content %} 
 <div class="fixedtext">
   <h2> Browse the Corpus</h2>
   <p>Here you can browse and search through the metadata of the texts currently in the nuṣūṣ corpus. You can further filter these texts by searching in English or in Arabic for titles, authors, or genres.</p>

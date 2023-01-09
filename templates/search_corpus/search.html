@@ -1,4 +1,9 @@
-{% extends 'base.html' %}{% load static %}{% block page_scripts %} <script src="{% static 'jquery/filter.js' %}"></script>{% endblock %} {% block content %} 
+{% extends 'base.html' %}
+{% block meta %}
+  <meta name="twitter:title" content="Search the Nuṣūṣ Corpus">
+  <meta name="twitter:description" content="Read and search through a variety of digitized Arabic texts not found in other digital corpora through the nuṣūṣ webapp. You can also browse text metadata and learn more about the authors.">
+{% endblock meta %}
+{% load static %}{% block page_scripts %} <script src="{% static 'jquery/filter.js' %}"></script>{% endblock %} {% block content %} 
 <div class="filter_search top">
 
 <div class="filter_title" > Search </div>
