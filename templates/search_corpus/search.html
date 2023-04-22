@@ -48,15 +48,15 @@
 </div>
 <div class="search_form">
     
-    <span style="vertical-align:text-bottom;">e:</span> <input type="hidden" name="e" {% if exact.0 == "1" %} value="1" {% else %} value="0" {% endif %}><input type="checkbox" onclick="this.previousElementSibling.value=1-this.previousSibling.value" {% if exact.0 == "1" %} checked {% endif %}> <input class="search_term" type="search" name="s" placeholder="Text Contains..." {% if terms.0 %} value="{{oterm.0}}" {% endif %} required > 
+    <span style="vertical-align:text-bottom;">e:</span> <input type="hidden" name="e" {% if exact.0 == "1" %} value="1" {% else %} value="0" {% endif %}><input type="checkbox" onclick="this.previousElementSibling.value=1-this.previousSibling.value" {% if exact.0 == "1" %} checked {% endif %}> <input class="search_term" type="search" name="s" placeholder="Text Contains..." {% if terms.0 %} value="{{terms.0}}" {% endif %} required > 
 
     <select id= "oper1" name="op" class="select_op"><option disabled="disabled" selected="selected"></option><option value="a" {% if opers.0 == "a" and terms.1%} selected {% endif %}>AND</option><option value="o"{% if opers.0 == "o" and terms.1%} selected {% endif %}>OR</option></select>
     <br>
-    <span style="vertical-align:text-bottom;">e:</span> <input type="hidden" name="e" {% if exact.1 == "1" and terms.1 %} value="1" {% else %} value="0" {% endif %} ><input type="checkbox" onclick="this.previousElementSibling.value=1-this.previousSibling.value" {% if exact.1 == "1" and terms.1 %} checked {% endif %}> <input id="search2" class="search_term" type="search" name="s" placeholder="Text Contains..."  {% if terms.1 %} value="{{oterm.1}}" {% endif %}onkeyup="updateRequirements();" > 
+    <span style="vertical-align:text-bottom;">e:</span> <input type="hidden" name="e" {% if exact.1 == "1" and terms.1 %} value="1" {% else %} value="0" {% endif %} ><input type="checkbox" onclick="this.previousElementSibling.value=1-this.previousSibling.value" {% if exact.1 == "1" and terms.1 %} checked {% endif %}> <input id="search2" class="search_term" type="search" name="s" placeholder="Text Contains..."  {% if terms.1 %} value="{{terms.1}}" {% endif %}onkeyup="updateRequirements();" > 
 
     <select id="oper2" name="op" class="select_op"><option disabled="disabled" selected="selected"></option><option value="a" {% if opers.1 == "a" and terms.2%} selected {% endif %}>AND</option><option value="o" {% if opers.1 == "o" and terms.2%} selected {% endif %}>OR</option></select>
     <br>
-    <span style="vertical-align:text-bottom;">e:</span> <input type="hidden" name="e" {% if exact.2 == "1" and terms.2 %} value="1" {% else %} value="0" {% endif %} ><input type="checkbox" onclick="this.previousElementSibling.value=1-this.previousSibling.value" {% if exact.2 == "1" and terms.2 %} checked {% endif %}> <input id="search3" class="search_term" type="search" name="s" placeholder="Text Contains..."  {% if terms.2 %} value="{{oterm.2}}" {% endif %}onkeyup="updateRequirements2();"><br>
+    <span style="vertical-align:text-bottom;">e:</span> <input type="hidden" name="e" {% if exact.2 == "1" and terms.2 %} value="1" {% else %} value="0" {% endif %} ><input type="checkbox" onclick="this.previousElementSibling.value=1-this.previousSibling.value" {% if exact.2 == "1" and terms.2 %} checked {% endif %}> <input id="search3" class="search_term" type="search" name="s" placeholder="Text Contains..."  {% if terms.2 %} value="{{terms.2}}" {% endif %}onkeyup="updateRequirements2();"><br>
     &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<input value="Search" type="submit">
   </form>
   <br>
@@ -81,7 +81,7 @@
         {% endfor %}
       </ul>
 
-      {% for search in oterm %}
+      {% for search in terms %}
         <input type="hidden" name="s" value="{{search}}">
       {% endfor %}
       {% for oper in opers %}
@@ -106,7 +106,7 @@
       {% for item in exact %}
       <input type="hidden" name="e" value="{{item}}">
       {% endfor %}
-      {% for search in oterm %}
+      {% for search in terms %}
       <input type="hidden" name="s" value="{{search}}">
       {% endfor %}
       {% for oper in opers %}

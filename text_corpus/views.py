@@ -95,8 +95,8 @@ def browse(request):
     #genre filter
     elif br_sr != '' and br_fl == '3':
         tentry = crpPage(Text.objects.filter(
-            Q(style__icontains=br_sr) |
-            Q(genre__icontains=br_sr)
+            Q(genre_id__gen_en__icontains=br_sr) |
+            Q(genre_id__gen_ar__icontains=br_sr)
             ).filter(status=3).order_by(textOrder()))
         link = getLink()
 

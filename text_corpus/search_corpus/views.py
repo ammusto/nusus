@@ -6,6 +6,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import render
 from text_corpus.models import Page, Text, Author, Genre
 from django.db.models import Q
+from operator import or_, and_
 import requests
 import re
 
@@ -19,7 +20,6 @@ def striphtml(data):
 def search(request):
     """ all functions related to search page """
     #check for search terms and operators
-    osterms = request.GET.getlist('s')
     sterms = request.GET.getlist('s')
     opers = request.GET.getlist('op')
     exact = request.GET.getlist('e')
@@ -59,33 +59,20 @@ def search(request):
                 textidlist.append(text)
 
     def getSrPage(terms, operators):
-        getpages = None
-
-
-        if len(terms) > 0:
-            tq1 = Q(pg_cont__icontains=terms[0])
-        if len(terms) > 1:
-            tq2 = Q(pg_cont__icontains=terms[1])
-        if len(terms) > 2:
-            tq3 = Q(pg_cont__icontains=terms[2])
+        queries = [Q(pg_cont__icontains=term) for term in terms]
 
         if len(terms) == 1:
-            getpages = Page.objects.filter(tq1).order_by('text__au_id__date')
+            getpages = Page.objects.filter(*queries).order_by('text__au_id__date')
         elif len(terms) == 2:
-            if operators[0] == 'a':
-                getpages = Page.objects.filter(tq1 & tq2).order_by('text__au_id__date')
-            else:
-                getpages = Page.objects.filter(tq1 | tq2).order_by('text__au_id__date')
-
+            op = and_ if operators[0] == 'a' else or_
+            getpages = Page.objects.filter(op(*queries)).order_by('text__au_id__date')
         elif len(terms) == 3:
-            if operators[0] == 'a' and operators [1] == 'a':
-                getpages = Page.objects.filter(tq1 & tq2 & tq3).order_by('text__au_id__date')
-            elif operators[0] == 'a' and operators [1] == 'o':
-                getpages = Page.objects.filter(tq1 & (tq2 | tq3)).order_by('text__au_id__date')
-            elif operators[0] == 'o' and operators [1] == 'a':
-                getpages = Page.objects.filter((tq1 | tq2) & tq3).order_by('text__au_id__date')
-            elif operators[0] == 'o' and operators [1] == 'o':
-                getpages = Page.objects.filter(tq1 | tq2 | tq3).order_by('text__au_id__date')
+            ops = {'a': and_, 'o': or_}
+            op1 = ops[operators[0]]
+            op2 = ops[operators[1]]
+            getpages = Page.objects.filter(op1(queries[0], op2(queries[1], queries[2]))).order_by('text__au_id__date')
+        else:
+            getpages = None
 
         return getpages
 
@@ -94,72 +81,39 @@ def search(request):
     def getResult(pages):
         """ get result display for search hit """
         for page in pages:
-
-            #strip html from page content to not interfere with display
             text = striphtml(Page.getContent(page))
-            i = 0
             for sterm in sterms:
-                index = text.find(sterms[i])
+                index = text.find(sterm)
                 if index != -1:
-                    #prev_len is amount of characters on each side of the search display
-                    prev_len = 30 - (len(sterms[i]) // 2)
-
-                    #set preview start index to 0 if result index is less than prev_len away from start of text
-                    pr_start = 0 if index < prev_len else index - prev_len
-                    startprev = '' if pr_start == 0 else '...'
-
-                    #set preview end index to end of text if result index is less than prev_len away from end of text
-                    pr_end = len(text) if index + prev_len + len(sterms[i]) > len(text
-                        )-1  else index + len(sterms[i]) + prev_len
-                    endprev = ''
-
-                    #build the preview text
-                    while index > pr_start : startprev += text[pr_start]; pr_start += 1
-                    while index  < pr_end-len(sterms[i]) : endprev += text[index+len(
-                        sterms[i])]; index += 1;
-                    #add elipsis if final word of preview is not end of text
-                    endprev += '' if pr_end == len(text) else '...'
-
-                    #build search result preview with highlighted search result
-                    preview = startprev + "<span style=\"color:red;font-weight:bold\">" + sterms[i] + "</span>" + endprev
-
-                    #get text result page metadata from model as dictionary
+                    prev_len = 30
+                    start_index = max(0, index - prev_len)
+                    end_index = min(len(text), index + len(sterm) + prev_len)
+                    preview = (
+                        '...' if start_index > 0 else ''
+                    ) + text[start_index:index] + '<span style="color:red;font-weight:bold">' + sterm + '</span>' + text[index + len(sterm):end_index] + (
+                        '...' if end_index < len(text) else ''
+                    )
                     sin_result = Page.getInfo(page)
-
-                    #add the search result to dictionary
                     sin_result['Term'].append(preview)
-
-                    #add finalized search result to main result list for display
                     main_result_list.append(sin_result)
-                    if opers and 'a' not in opers:
-                        i += 1
-                    else:
-                        break
-                else:
-                    i += 1
 
     #run search if search terms are used
     if sterms:
-        #use author filter
-        if au_fl and not txt_fl and not gen_fl:
-            for auth in au_fl:
-                getpages = getSrPage(sterms, opers).filter(text_id__au_id=auth)
-                getResult(getpages)
-        #use text filter
-        elif txt_fl and not au_fl and not gen_fl:
-            print("OK")
-            for text in txt_fl:
-                getpages = getSrPage(sterms, opers).filter(text_id=text)
-                getResult(getpages)
-        #use genre filter
-        elif gen_fl and not au_fl and not txt_fl:
-            for genre in gen_fl:
-                getpages = getSrPage(sterms, opers).filter(text_id__genre=genre)
-                getResult(getpages)
-        #run search on entire corpus
-        else:
-            getResult(getSrPage(sterms, opers))
-        #get author and text list for search result filters
+        filters = {}
+        if au_fl:
+            filters['text_id__au_id__in'] = au_fl
+            print(filters)
+        elif txt_fl:
+            filters['text_id__in'] = txt_fl
+        elif gen_fl:
+            filters['text_id__genre__in'] = gen_fl
+
+        pages = getSrPage(sterms, opers)
+        if filters:
+            pages = pages.filter(**filters)
+
+        getResult(pages)
+
         if main_result_list:
             getSrFilter(main_result_list)
         else:
@@ -186,7 +140,6 @@ def search(request):
         'authors' : authors,
         'genres' : genres,
         'exact' : exact,
-        'oterm' : osterms,
         'txtfl' : txt_fl,
         'aufl' : au_fl,
         'genfl' : gen_fl,
