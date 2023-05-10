@@ -11,105 +11,51 @@ import re
 
 # Create your views here.
 def browse(request):
-
-    #get order direction
+    # Get query params
+    page_num = request.GET.get('page', '1')
+    order = request.GET.get('order', 'text_id')
     dr = request.GET.get('d')
+    br_fl = request.GET.get('f', '0')
+    br_sr = request.GET.get('s', '')
 
-    #set default order
-    order = 'text_id'
-
-    #sets ordering of corpus table through url parameters
-    def textOrder():
-        order = request.GET.get('order')
-        if dr == 'desc':
-            direct = '-'
-        else:
-            direct = ''
-        if order == 'ti':
-            order = direct + 'title_ar'
-        elif order == 'da':
-            order = direct + 'au_id__date'
-        elif order == 'au':
-            order = direct + 'au_id__au_sh'
-        elif order == 'tid':
-            order = direct + "text_id"
-        else:
-            order = 'text_id'
-        return order
-
-    #paginate corpus list
-
-    def crpPage(corpus):
-        crp_list = list(corpus)
-        crp_paginator = Paginator(crp_list, 20)
-        cpage = crp_paginator.get_page(page_num)
-        return cpage
-
-    #get page num for corpus list
-    if request.GET.get('page') is not None and int(request.GET.get('page')):
-        page_num = request.GET.get('page')
+    # Set ordering of corpus table through url parameters
+    if dr == 'desc':
+        order = f"-{order}"
     else:
-        page_num = '1'
+        order = f"{order}"
 
-    #get corpus search and filter results
-    br_fl = request.GET.get('f')
-    br_sr = request.GET.get('s')
+    # Get corpus search and filter results
+    text_query = Q(status=3)
+    if br_sr and br_fl == '0':
+        text_query &= (Q(title_tl__icontains=br_sr) |
+                       Q(title_ar__icontains=br_sr) |
+                       Q(au_id__au_tl__icontains=br_sr) |
+                       Q(au_id__au_ar__icontains=br_sr) |
+                       Q(genre_id__gen_en__icontains=br_sr) |
+                       Q(genre_id__gen_ar__icontains=br_sr))
+    elif br_sr and br_fl == '1':
+        text_query &= (Q(title_tl__icontains=br_sr) |
+                       Q(title_ar__icontains=br_sr))
+    elif br_sr and br_fl == '2':
+        text_query &= (Q(au_id__au_tl__icontains=br_sr) |
+                       Q(au_id__au_ar__icontains=br_sr))
+    elif br_sr and br_fl == '3':
+        text_query &= (Q(genre_id__gen_en__icontains=br_sr) |
+                       Q(genre_id__gen_ar__icontains=br_sr))
 
-    #get url paramaters to pass to urls in template for table sorting
-    link = ''
-    def getLink():
-        link = '&s=' + br_sr + '&' + 'f=' + br_fl
-        return link
-
-    #run corpus metadata search
-    tentry = ''
-    if br_sr is None or br_sr == '':
-        order = textOrder()
-        tentry = crpPage(Text.objects.filter(status=3).order_by(textOrder()))
-    #no filter
-    elif br_sr != '' and br_fl == '0':
-        PP = Q(title_ar__icontains=br_sr) 
-        tentry = crpPage(Text.objects.filter(
-            Q(title_tl__icontains=br_sr) |
-            Q(title_ar__icontains=br_sr) |
-            Q(au_id__au_tl__icontains=br_sr) |
-            Q(au_id__au_ar__icontains=br_sr) |
-            Q(genre_id__gen_en__icontains=br_sr) |
-            Q(genre_id__gen_ar__icontains=br_sr)
-            ).filter(status=3).order_by(textOrder()))
-        link = getLink()
-    #title filter
-    elif br_sr != '' and br_fl == '1':
-        tentry = crpPage(Text.objects.filter(
-            Q(title_tl__icontains=br_sr) |
-            Q(title_ar__icontains=br_sr)
-            ).filter(status=3).order_by(textOrder()))
-        link = getLink()
-    #author filter
-    elif br_sr != '' and br_fl == '2':
-        tentry = crpPage(Text.objects.filter(
-            Q(au_id__au_tl__icontains=br_sr) |
-            Q(au_id__au_ar__icontains=br_sr)
-            ).filter(status=3).order_by(textOrder()))
-        link = getLink()
-    #genre filter
-    elif br_sr != '' and br_fl == '3':
-        tentry = crpPage(Text.objects.filter(
-            Q(genre_id__gen_en__icontains=br_sr) |
-            Q(genre_id__gen_ar__icontains=br_sr)
-            ).filter(status=3).order_by(textOrder()))
-        link = getLink()
+    # Run corpus metadata search
+    text_list = Text.objects.filter(text_query).order_by(order)
+    paginator = Paginator(text_list, 20)
+    tentry = paginator.get_page(page_num)
 
     context = {
-            'tentry': tentry,
-            'direct': dr,
-            'link' : link,
-            'order' : order,
-            'br_sr' : br_sr,
-            'curpg' : page_num,
-        }
-
-        
+        'tentry': tentry,
+        'direct': dr,
+        'link': f"&s={br_sr}&f={br_fl}",
+        'order': order,
+        'br_sr': br_sr,
+        'curpg': page_num,
+    }   
     return render(request, 'text_corpus/browse.html', context)
 
 def text_detail(request, pk):

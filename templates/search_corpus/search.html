@@ -50,7 +50,7 @@
     
     <span style="vertical-align:text-bottom;">e:</span> <input type="hidden" name="e" {% if exact.0 == "1" %} value="1" {% else %} value="0" {% endif %}><input type="checkbox" onclick="this.previousElementSibling.value=1-this.previousSibling.value" {% if exact.0 == "1" %} checked {% endif %}> <input class="search_term" type="search" name="s" placeholder="Text Contains..." {% if terms.0 %} value="{{terms.0}}" {% endif %} required > 
 
-    <select id= "oper1" name="op" class="select_op"><option disabled="disabled" selected="selected"></option><option value="a" {% if opers.0 == "a" and terms.1%} selected {% endif %}>AND</option><option value="o"{% if opers.0 == "o" and terms.1%} selected {% endif %}>OR</option></select>
+    <select id= "oper1" name="op" class="select_op"><option selected="selected"></option><option value="a" {% if opers.0 == "a" and terms.1%} selected {% endif %}>AND</option><option value="o"{% if opers.0 == "o" and terms.1%} selected {% endif %}>OR</option></select>
     <br>
     <span style="vertical-align:text-bottom;">e:</span> <input type="hidden" name="e" {% if exact.1 == "1" and terms.1 %} value="1" {% else %} value="0" {% endif %} ><input type="checkbox" onclick="this.previousElementSibling.value=1-this.previousSibling.value" {% if exact.1 == "1" and terms.1 %} checked {% endif %}> <input id="search2" class="search_term" type="search" name="s" placeholder="Text Contains..."  {% if terms.1 %} value="{{terms.1}}" {% endif %}onkeyup="updateRequirements();" > 
 
@@ -65,7 +65,11 @@
 </div>
 
 </div> 
-
+<div class="error">
+    {% if error  %} 
+        {{error}} 
+    {% endif %} 
+</div> 
 
 {% if main_result_list %} 
 <div class="filter_search">
@@ -138,8 +142,4 @@
   </tbody>
 </table> 
 {% endif %} 
-<div class="error"> 
-    {% if error  %} 
-        {{error}} 
-    {% endif %} 
-</div> {% endblock %}
+{% endblock %}

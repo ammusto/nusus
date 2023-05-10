@@ -474,7 +474,8 @@ height: 270px;
 .error{
   font-size: 16px;
   text-align: center !important;
-  width: 100%
+  width: 100%;
+  margin-bottom:15px;
 }
 .filter_contents {
   float: right;
