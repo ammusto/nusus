@@ -15,6 +15,7 @@ class CorpusUp(models.Model):
 
 class TeamMem(models.Model):
     mem_id = models.IntegerField(primary_key=True)
+    role = models.CharField(max_length=40)
     name = models.CharField(max_length=40)
     bio = models.TextField()
     photo = models.ImageField(upload_to='mem')

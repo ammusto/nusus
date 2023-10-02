@@ -22,6 +22,12 @@ h2 {
   text-decoration: none;
   max-width: 900px
 }
+
+.mem_role {
+text-align: center;
+font-style: italic;
+}
+
 .top-menu, .top-menu: hover, .top-menu: visited {
   color: #ffffff;
   float: right;
