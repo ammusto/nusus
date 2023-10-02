@@ -34,11 +34,11 @@
       <tr>
         <th id="crp_src">Source</th>
         <th id="crp_gen">Category</th>
-        <th id="crp_titl">{% if direct == 'desc' %} <a href="./?order=ti{{link}}">{% else %} <a href="./?order=ti&d=desc{{link}}">{% endif %}{% if order == 'title_ar' or order == '-title_ar' %}<span style="font-weight: 500;">Title &#8597;</span>{% else %}Title &#8597;{% endif %}</a></th>
+        <th id="crp_titl">{% if direct == 'desc' %} <a href="./?order=title_ar{{link}}">{% else %} <a href="./?order=title_ar&d=desc{{link}}">{% endif %}{% if order == 'title_ar' or order == '-title_ar' %}<span style="font-weight: 500;">Title &#8597;</span>{% else %}Title &#8597;{% endif %}</a></th>
 
-        <th id="crp_au">{% if direct == 'desc' %} <a href="./?order=au{{link}}">{% else %} <a href="./?order=au&d=desc{{link}}">{% endif %}{% if order == 'au_id__au_sh' or order == '-au_id__au_sh'%}<span style="font-weight: 500">Author &#8597;</span>{% else %}Author &#8597;{% endif %}</a></th>
+        <th id="crp_au">{% if direct == 'desc' %} <a href="./?order=au_id{{link}}">{% else %} <a href="./?order=au_id&d=desc{{link}}">{% endif %}{% if order == 'au_id__au_sh' or order == '-au_id__au_sh'%}<span style="font-weight: 500">Author &#8597;</span>{% else %}Author &#8597;{% endif %}</a></th>
         <th id="crp_date">{% if direct == 'desc' %} <a href="./?order=da{{link}}">{% else %} <a href="./?order=da&d=desc{{link}}">{% endif %}{% if order == 'au_id__date' or order == '-au_id__date'%}<span style="font-weight: 500">Date &#8597;</span>{% else %}Date &#8597;{% endif %}</a></th>
-        <th id="crp_tid">{% if direct == 'desc' %} <a href="./?order=tid{{link}}">{% else %} <a href="./?order=tid&d=desc{{link}}">{% endif %}{% if order == 'text_id' or order == '-text_id'%}<span style="font-weight: 500">Text ID &#8597;</span>{% else %}Text ID &#8597;{% endif %}</a>
+        <th id="crp_tid">{% if direct == 'desc' %} <a href="./?order=text_id{{link}}">{% else %} <a href="./?order=text_id&d=desc{{link}}">{% endif %}{% if order == 'text_id' or order == '-text_id'%}<span style="font-weight: 500">Text ID &#8597;</span>{% else %}Text ID &#8597;{% endif %}</a>
         </th>
       </tr>
     </thead>

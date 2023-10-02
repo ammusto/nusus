@@ -13,10 +13,13 @@ import re
 def browse(request):
     # Get query params
     page_num = request.GET.get('page', '1')
-    order = request.GET.get('order', 'text_id')
+    order = request.GET.get('order')
     dr = request.GET.get('d')
     br_fl = request.GET.get('f', '0')
     br_sr = request.GET.get('s', '')
+
+    if order == "da":
+        order = "au_id__date"
 
     # Set ordering of corpus table through url parameters
     if dr == 'desc':
