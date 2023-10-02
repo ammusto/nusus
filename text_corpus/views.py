@@ -18,14 +18,17 @@ def browse(request):
     br_fl = request.GET.get('f', '0')
     br_sr = request.GET.get('s', '')
 
-    if order == "da":
-        order = "au_id__date"
+    if order:
+        if order == "da":
+            order = "au_id__date"
 
-    # Set ordering of corpus table through url parameters
-    if dr == 'desc':
-        order = f"-{order}"
+        # Set ordering of corpus table through url parameters
+        if dr == 'desc':
+            order = f"-{order}"
+        else:
+            order = f"{order}"
     else:
-        order = f"{order}"
+        order = "text_id"
 
     # Get corpus search and filter results
     text_query = Q(status=3)
@@ -45,6 +48,7 @@ def browse(request):
     elif br_sr and br_fl == '3':
         text_query &= (Q(genre_id__gen_en__icontains=br_sr) |
                        Q(genre_id__gen_ar__icontains=br_sr))
+
 
     # Run corpus metadata search
     text_list = Text.objects.filter(text_query).order_by(order)
